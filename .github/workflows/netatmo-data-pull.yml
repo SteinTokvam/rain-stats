@@ -20,11 +20,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: create-json
-      id: create-json
-      uses: jsdaniell/create-json@v1.2.2
-      with:
-        name: "credentials.json"
-        json: ${{ secrets.FIREBASE_ADMIN_KEY }}
+        id: create-json
+        uses: jsdaniell/create-json@v1.2.2
+        with:
+          name: "credentials.json"
+          json: ${{ secrets.FIREBASE_ADMIN_KEY }}
       - name: execute py script # run main.py
         env:
           NETATMO_ACCESS_TOKEN: ${{ secrets.NETATMO_ACCESS_TOKEN }}
