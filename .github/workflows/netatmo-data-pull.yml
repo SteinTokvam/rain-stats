@@ -33,5 +33,5 @@ jobs:
           NETATMO_MODULE_ID: ${{ secrets.NETATMO_MODULE_ID }}
           NETATMO_DEVICE_ID: ${{ secrets.NETATMO_DEVICE_ID }}
           FIREBASE_URL: ${{ secrets.FIREBASE_URL }}
-          FIREBASE_ADMIN_KEY: ${{ steps.create-env.outputs.full-path }}
+          FIREBASE_ADMIN_KEY: credentials.json 
         run: python netatmo.py
