@@ -88,7 +88,7 @@ if response_data is not None:
 
     konvertert_til_lesbar_datoer = create_json_object(keys=datoer_lesbar, values=regn_pr_dag, format=format)
     
-    cred_obj = firebase_admin.credentials.Certificate('rain-collector-firebase-admin-keys.json')
+    cred_obj = firebase_admin.credentials.Certificate(os.environ['FIREBASE_ADMIN_KEY'])
     default_app = firebase_admin.initialize_app(cred_obj, {
         'databaseURL': os.environ['FIREBASE_URL']
     })
