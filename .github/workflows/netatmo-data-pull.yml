@@ -2,7 +2,7 @@ name: run netatmo.py
 
 on:
   schedule:
-    - cron: '0 0/5 0 ? * * *' # At second :00, every 5 minutes starting at minute :00, at 00am, of every day
+    - cron: '10 35 * * *' # At 00:00 on Monday
 
 jobs:
   build:
