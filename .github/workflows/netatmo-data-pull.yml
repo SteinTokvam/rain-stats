@@ -1,0 +1,34 @@
+name: run netatmo.py
+
+on:
+  schedule:
+    - cron: '0 0/5 0 ? * * *' # At second :00, every 5 minutes starting at minute :00, at 00am, of every day
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content
+
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # install the python version needed
+
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: execute py script # run main.py
+        env:
+          NETATMO_ACCESS_TOKEN: ${{ secrets.NETATMO_ACCESS_TOKEN }}
+          NETATMO_REFRESH_TOKEN: ${{ secrets.NETATMO_REFRESH_TOKEN }}
+          NETATMO_CLIENT_ID: ${{ secrets.NETATMO_CLIENT_ID }}
+          NETATMO_CLIENT_SECRET: ${{ secrets.NETATMO_CLIENT_SECRET }}
+          NETATMO_MODULE_ID: ${{ secrets.NETATMO_MODULE_ID }}
+          NETATMO_DEVICE_ID: ${{ secrets.NETATMO_DEVICE_ID }}
+          FIREBASE_URL: ${{ secrets.FIREBASE_URL }}
+        run: python main.py

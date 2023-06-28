@@ -4,11 +4,12 @@ from datetime import timedelta
 import json
 import firebase_admin
 from firebase_admin import db
+import os
 
-access_token = '5e0376d597d026000c293c9e|b84b2ba205592bb851f6ac13449bc1a3'
-refresh_token = '5e0376d597d026000c293c9e|9fd3bc9060db3a1dd437a1e03e7952b7'
-client_id = '649916fc00a931316f0c776e'
-client_secret = '5GE72ATAJd44qhYxdOQrZixcPkq0ktTtKGzer'
+access_token = os.environ['NETATMO_ACCESS_TOKEN']
+refresh_token = os.environ['NETATMO_REFRESH_TOKEN']
+client_id = os.environ['NETATMO_CLIENT_ID']
+client_secret = os.environ['NETATMO_CLIENT_SECRET']
 
 base_url = 'https://api.netatmo.com'
 format = '%d/%m/%Y'
@@ -42,8 +43,8 @@ def call_api_with_bearer_token(bearer_token):
     }
 
     params = {
-        'device_id': '70:ee:50:3e:fc:82',
-        'module_id': '05:00:00:07:e1:fa',
+        'device_id': os.environ['NETATMO_DEVICE_ID'],
+        'module_id': os.environ['NETATMO_MODULE_ID'],
         'scale': '1day',
         'type': 'sum_rain',
         'optimize': 'false',
@@ -89,7 +90,7 @@ if response_data is not None:
     
     cred_obj = firebase_admin.credentials.Certificate('rain-collector-firebase-admin-keys.json')
     default_app = firebase_admin.initialize_app(cred_obj, {
-        'databaseURL': 'https://rain-collector-default-rtdb.europe-west1.firebasedatabase.app'
+        'databaseURL': os.environ['FIREBASE_URL']
     })
     ref = db.reference("/rain")
 
