@@ -101,7 +101,7 @@ if response_data is not None:
         yesterday = datetime.today() - timedelta(days=1)
         
         if value['value'] > 0.0 and datetime.strptime(value['key'], format).strftime(format) == yesterday.strftime(format): 
-            #ref.push().set(value)
+            ref.push().set(value)
             print('sent ' + str(value) + ' to firebase.')
         elif datetime.strptime(value['key'], format).strftime(format) == yesterday.strftime(format):
             print('Det regnet ikke i går, så ingenting å lagre ned.')
