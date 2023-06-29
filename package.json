@@ -2,7 +2,7 @@
   "name": "rain-stats",
   "version": "0.1.0",
   "private": true,
-  "homepage": "steintokvam.github.io/rain-stats",
+  "homepage": "https://steintokvam.github.io/rain-stats",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
