@@ -8,7 +8,7 @@ export default function Dashboard() {
     const [totalRain, setTotalRain] = useState(0)
     
       useEffect(() => {
-        fetch('http://localhost:6001/data')
+        fetch('https://rain-collector.ew.r.appspot.com/data')
         .then(response => response.json())
         .then(list => {
             var totalRain = 0;
