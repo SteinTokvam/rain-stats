@@ -70,7 +70,9 @@ export default function Dashboard() {
             
             {rainDataFiltered !== '' ? <>
                 <Total totalRain={totalRain}/>
-                <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key} og {rainDataFiltered[rainDataFiltered.length-1].key} og dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
+                <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key} og {rainDataFiltered[rainDataFiltered.length-1].key} og 
+                dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
+                <p>Det har regnet <b>{(totalRain/rainDataFiltered.length).toFixed(2)}</b> i snitt for hver regndag.</p>
                 <DatoFilter submit={filtrerDato} fraDato={convertDateString(rainDataFiltered[0].key)} tilDato={convertDateString(rainDataFiltered[rainDataFiltered.length-1].key)}/>
                 <Tabell rainData={rainDataFiltered}/>
             </> : ''}
