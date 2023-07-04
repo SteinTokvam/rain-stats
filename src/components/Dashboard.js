@@ -3,6 +3,8 @@ import './Dashboard.css';
 import Total from "./Total";
 import Tabell from "./Tabell";
 import DatoFilter from "./DatoFilter";
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+
 
 export default function Dashboard() {
     const [rainData, setRainData] = useState('')
@@ -65,6 +67,35 @@ export default function Dashboard() {
         return split[2]+'-'+split[1]+'-'+split[0]
     }
 
+    const renderChart = (
+        <div style={{ width: '100%', height: 300 }}>
+        <ResponsiveContainer>
+          <AreaChart
+            data={rainDataFiltered}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <defs>
+                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+                <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="key" />
+            <YAxis />
+            <Tooltip />
+            <Area type="monotone" dataKey="value" stroke="#8884d8" name="Nedbør" fillOpacity={1} fill="url(#colorUv)" />
+            <Legend verticalAlign="top" height={36}/>
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
+      );
+
     return(
         <div className="Dashboard">
             
@@ -74,6 +105,7 @@ export default function Dashboard() {
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
                 <p>Det har regnet <b>{(totalRain/rainDataFiltered.length).toFixed(2)}</b> i snitt for hver regndag.</p>
                 <DatoFilter submit={filtrerDato} fraDato={convertDateString(rainDataFiltered[0].key)} tilDato={convertDateString(rainDataFiltered[rainDataFiltered.length-1].key)}/>
+                {renderChart}
                 <Tabell rainData={rainDataFiltered}/>
             </> : ''}
               
