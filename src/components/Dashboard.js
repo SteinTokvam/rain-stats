@@ -18,7 +18,7 @@ export default function Dashboard() {
     }
 
       useEffect(() => {
-        fetch('https://rain-collector.ew.r.appspot.com/data')
+        fetch('https://rain-stats-serverless.vercel.app/api/data')
         .then(response => response.json())
         .then(list => {
             setTotalRain(calculateTotalRain(list))
