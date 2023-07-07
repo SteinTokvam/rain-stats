@@ -9,8 +9,6 @@ import Paper from '@mui/material/Paper';
 
 export default function Tabell({rainData}) {
     
-      
-      
     return(
         <div className="Tabell">
             <TableContainer component={Paper}>
