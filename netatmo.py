@@ -14,8 +14,7 @@ client_secret = os.environ['NETATMO_CLIENT_SECRET']
 base_url = 'https://api.netatmo.com'
 format = '%d/%m/%Y'
 
-def get_refresh_token(base_url , refresh_token, access_token, client_id, client_secret):#trenger access token og refresh token. dette vil man få returnert et nytt sett av som en må bruke videre.
-    #test om man kan få nytt sett etter at det gamle har gått ut eller om man må setter opp refresh til når nå enn tokenet går ut
+def get_refresh_token(base_url , refresh_token, access_token, client_id, client_secret)
 
     endpoint = base_url + '/oauth2/token'
 
