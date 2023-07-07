@@ -17,8 +17,8 @@ export default function DatoFilter(props){
 
     return(
         <form onSubmit={submit}>
-            <input type="date" id="fraDato" name="fra-dato" value={fraDato} onChange={(e) => dispatch(addFraDato(e.target.value))}></input>
-            <input type="date" id="tilDato" name="til-dato" value={tilDato} onChange={(e) => dispatch(addTilDato(e.target.value))}></input>
+            <input type="date" id="fraDato" name="fra-dato" value={fraDato} min={props.fraDato} max={props.tilDato} onChange={(e) => dispatch(addFraDato(e.target.value))}></input>
+            <input type="date" id="tilDato" name="til-dato" value={tilDato} min={props.fraDato} max={props.tilDato} onChange={(e) => dispatch(addTilDato(e.target.value))}></input>
             <input type="submit" value="Submit" />
         </form>
     )
