@@ -5,7 +5,7 @@ import Tabell from "./Tabell";
 import DatoFilter from "./DatoFilter";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTotalRain, addRainData, addRainDataFiltered } from '../actions';
+import { addTotalRain, addRainData, addRainDataFiltered, addFraDato, addTilDato } from '../actions';
 
 
 export default function Dashboard() {
@@ -30,6 +30,8 @@ export default function Dashboard() {
             dispatch(addTotalRain(calculateTotalRain(list)))
             dispatch(addRainData(list))
             dispatch(addRainDataFiltered(list))
+            dispatch(addFraDato(convertDateString(list[0].key)));
+            dispatch(addTilDato(convertDateString(list[list.length-1].key)));
             return
         })
     }, [dispatch]);
@@ -107,7 +109,7 @@ export default function Dashboard() {
                 <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key} og {rainDataFiltered[rainDataFiltered.length-1].key} og 
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
                 <p>Det har regnet <b>{(totalRain/rainDataFiltered.length).toFixed(2)}</b> i snitt for hver regndag.</p>
-                <DatoFilter submit={filtrerDato} fraDato={convertDateString(rainDataFiltered[0].key)} tilDato={convertDateString(rainDataFiltered[rainDataFiltered.length-1].key)}/>
+                <DatoFilter submit={filtrerDato} />
                 {renderChart}
                 <Tabell rainData={rainDataFiltered}/>
             </> : ''}
