@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import './Dashboard.css';
 import Total from "./Total";
 import Tabell from "./Tabell";
 import DatoFilter from "./DatoFilter";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { useSelector, useDispatch } from 'react-redux';
+import { addTotalRain, addRainData, addRainDataFiltered } from '../actions';
 
 
 export default function Dashboard() {
-    const [rainData, setRainData] = useState('')
-    const [rainDataFiltered, setRainDataFiltered] = useState('')
-    const [totalRain, setTotalRain] = useState(0)
+    const rainData = useSelector((state) => state.rootReducer.rain.rainData);
+    const rainDataFiltered = useSelector((state) => state.rootReducer.rain.rainDataFiltered);
+    const totalRain = useSelector((state) => state.rootReducer.rain.totalRain);
     
+    const dispatch = useDispatch();
+
     function calculateTotalRain(list) {
         var totalRain = 0;
             list.forEach(element => {
@@ -23,14 +27,14 @@ export default function Dashboard() {
         fetch('https://rain-stats-serverless.vercel.app/api/data')
         .then(response => response.json())
         .then(list => {
-            setTotalRain(calculateTotalRain(list))
-            setRainData(list)
-            setRainDataFiltered(list)
+            dispatch(addTotalRain(calculateTotalRain(list)))
+            dispatch(addRainData(list))
+            dispatch(addRainDataFiltered(list))
             return
         })
-    }, []);
+    }, [dispatch]);
 
-    const max = rainDataFiltered !== '' ? rainDataFiltered.reduce(function(prev, current) {
+    const max = rainDataFiltered.length > 0 ? rainDataFiltered.reduce(function(prev, current) {
         return (prev.value > current.value) ? prev : current
     }) : ''
 
@@ -58,8 +62,8 @@ export default function Dashboard() {
             
             return fraDatoDate <= rainDate && rainDate <= tilDatoDate
         })
-        setRainDataFiltered(filteredData)
-        setTotalRain(calculateTotalRain(filteredData))
+        dispatch(addRainDataFiltered(filteredData))
+        dispatch(addTotalRain(calculateTotalRain(filteredData)))
     }
 
     function convertDateString(date) {
@@ -98,8 +102,7 @@ export default function Dashboard() {
 
     return(
         <div className="Dashboard">
-            
-            {rainDataFiltered !== '' ? <>
+            {rainDataFiltered.length > 0 ? <>
                 <Total totalRain={totalRain}/>
                 <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key} og {rainDataFiltered[rainDataFiltered.length-1].key} og 
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
@@ -108,7 +111,6 @@ export default function Dashboard() {
                 {renderChart}
                 <Tabell rainData={rainDataFiltered}/>
             </> : ''}
-              
-        </div>
+            </div>
     )
 }
