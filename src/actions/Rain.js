@@ -1,3 +1,4 @@
+//rain actions
 export const addRainData = (rainData) => {
     return {
         type: 'ADD_RAIN_DATA',
@@ -19,16 +20,3 @@ export const addTotalRain = (totalRain) => {
     };
 };
 
-export const addFraDato = (fraDato) => {
-    return {
-        type: 'ADD_FRA_DATO',
-        payload: fraDato,
-    };
-};
-
-export const addTilDato = (tilDato) => {
-    return {
-        type: 'ADD_TIL_DATO',
-        payload: tilDato,
-    };
-};

@@ -5,7 +5,8 @@ import Tabell from "./Tabell";
 import DatoFilter from "./DatoFilter";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTotalRain, addRainData, addRainDataFiltered, addFraDato, addTilDato } from '../actions';
+import { addTotalRain, addRainData, addRainDataFiltered } from '../actions/Rain';
+import { addFraDato, addTilDato } from '../actions/Date';
 
 
 export default function Dashboard() {

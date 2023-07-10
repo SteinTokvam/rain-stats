@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addFraDato } from "../actions";
-import { addTilDato } from "../actions";
+import { addFraDato, addTilDato } from "../actions/Date";
+
 
 export default function DatoFilter(props){
 
@@ -19,7 +19,7 @@ export default function DatoFilter(props){
         <form onSubmit={submit}>
             <input type="date" id="fraDato" name="fra-dato" value={fraDato} min={props.fraDato} max={props.tilDato} onChange={(e) => dispatch(addFraDato(e.target.value))}></input>
             <input type="date" id="tilDato" name="til-dato" value={tilDato} min={props.fraDato} max={props.tilDato} onChange={(e) => dispatch(addTilDato(e.target.value))}></input>
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Filtrer" />
         </form>
     )
     }
