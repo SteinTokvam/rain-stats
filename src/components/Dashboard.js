@@ -25,7 +25,7 @@ export default function Dashboard() {
     }
 
       useEffect(() => {
-        fetch('https://rain-stats-serverless.vercel.app/api/data')
+        fetch('https://rain-stats-serverless.vercel.app/api/refresh', {method: 'POST'})
         .then(response => response.json())
         .then(list => {
             dispatch(addTotalRain(calculateTotalRain(list)))

@@ -14,7 +14,7 @@ client_secret = os.environ['NETATMO_CLIENT_SECRET']
 base_url = 'https://api.netatmo.com'
 format = '%d/%m/%Y'
 
-def get_refresh_token(base_url , refresh_token, access_token, client_id, client_secret):
+def get_refresh_token(base_url , refresh_token, client_id, client_secret):
 
     endpoint = base_url + '/oauth2/token'
 
@@ -68,7 +68,7 @@ def create_json_object(keys, values, format):
     
     return json_object
 
-access_token = get_refresh_token(base_url, refresh_token, access_token, client_id, client_secret)
+access_token = get_refresh_token(base_url, refresh_token, client_id, client_secret)
 
 response_data = call_api_with_bearer_token(access_token)
 
