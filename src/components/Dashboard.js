@@ -7,6 +7,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { useSelector, useDispatch } from 'react-redux';
 import { addTotalRain, addRainData, addRainDataFiltered } from '../actions/Rain';
 import { addFraDato, addTilDato } from '../actions/Date';
+import Spinner from "./Spinner";
 
 
 export default function Dashboard() {
@@ -113,7 +114,7 @@ export default function Dashboard() {
                 <DatoFilter submit={filtrerDato} fraDato={convertDateString(rainData[0].key)} tilDato={convertDateString(rainData[rainData.length-1].key)}/>
                 {renderChart}
                 <Tabell rainData={rainDataFiltered}/>
-            </> : ''}
+            </> : <Spinner />}
             </div>
     )
 }
