@@ -11,7 +11,7 @@ export default function DatoFilter(props){
     const dispatch = useDispatch();
 
     function submit(event) {
-        event.preventDefault(event.target.value)
+        event.preventDefault()
         props.submit(fraDato, tilDato)
     }
 
