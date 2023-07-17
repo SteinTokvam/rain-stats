@@ -20,7 +20,7 @@ export default function Login() {
             })
         }
         console.log(req)
-        fetch('http://127.0.0.1:3000/api/user/signin', req)
+        fetch('https://rain-stats-serverless.vercel.app/api/user/signin', req)
             .then(response => response.json())
             .then(res => console.log(res))
     }

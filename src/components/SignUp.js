@@ -20,7 +20,7 @@ export default function SignUp(){
         }
         console.log(req)
         if(validatePassword(tmpPass)) {
-            fetch('http://127.0.0.1:3000/api/user/signup', req)
+            fetch('https://rain-stats-serverless.vercel.app/api/user/signup', req)
             .then(response => response.json())
             .then(res => console.log(res))
         } else {
