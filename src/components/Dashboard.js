@@ -14,8 +14,9 @@ export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
     const rainDataFiltered = useSelector((state) => state.rootReducer.rain.rainDataFiltered);
     const totalRain = useSelector((state) => state.rootReducer.rain.totalRain);
-    
+
     const dispatch = useDispatch();
+    const searchParams = new URLSearchParams(document.location.search)
 
     function calculateTotalRain(list) {
         var totalRain = 0;
@@ -26,7 +27,7 @@ export default function Dashboard() {
     }
 
       useEffect(() => {
-        fetch('https://rain-stats-serverless.vercel.app/api/netatmo/refresh')//, {method: 'POST'})
+        fetch('https://rain-stats-serverless.vercel.app/api/netatmo/refresh')
         .then(response => response.json())
         .then(list => {
             dispatch(addTotalRain(calculateTotalRain(list)))
@@ -109,9 +110,26 @@ export default function Dashboard() {
       </div>
       );
 
+    function getQueryCode() {
+        const uuid = window.sessionStorage.getItem("uuid");
+        if(uuid === searchParams.get('state')) {
+            console.log('UUID er lik.');
+            fetch('http://localhost:3000/api/netatmo/token', {
+                method: 'POST',
+                body: JSON.stringify({'auth_code': searchParams.get('code')})
+            }).then(r => r.json())
+            .then(r => console.log(r))
+        } else if(searchParams.get('error') === 'access_denied') {
+            console.log('Brukeren aksepterte ikke at vi kan hente data fra netatmo')
+        } else {
+            console.error('UUID er IKKE like! ' + uuid + ' fra netatmo: ' + searchParams.get('state'))
+        }
+    }
+
     return(
         <div className="Dashboard">
             {rainDataFiltered.length > 0 ? <>
+               { getQueryCode()}
                 <Total totalRain={totalRain}/>
                 <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key} og {rainDataFiltered[rainDataFiltered.length-1].key} og 
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>

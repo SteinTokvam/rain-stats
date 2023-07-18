@@ -9,7 +9,6 @@ export default function Login() {
     const password = useSelector(state => state.rootReducer.user.password);
 
     const navigate = useNavigate();
-
     const dispatch = useDispatch();
 
     function handleSubmit(event) {
@@ -36,8 +35,16 @@ export default function Login() {
             .catch(e => e.message)
     }
 
+    function authenticateWithNetatmo(){
+        const uuid = crypto.randomUUID();
+        window.sessionStorage.setItem("uuid", uuid);
+        
+        window.location.replace(`https://api.netatmo.com/oauth2/authorize?client_id=649c317ca3c5ae50f30b6bea&redirect_uri=http://localhost:3001&scope=read_station&state=${uuid}`)
+    }
+
     return(
         <div>
+            {authenticateWithNetatmo()}
             <form onSubmit={handleSubmit}>
                 <div>
                     <p>E-post:</p>
