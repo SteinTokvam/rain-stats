@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addTotalRain, addRainData, addRainDataFiltered } from '../actions/Rain';
 import { addFraDato, addTilDato } from '../actions/Date';
 import Spinner from "./Spinner";
-
+import { toast } from "react-hot-toast";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
@@ -66,8 +66,13 @@ export default function Dashboard() {
             
             return fraDatoDate <= rainDate && rainDate <= tilDatoDate
         })
-        dispatch(addRainDataFiltered(filteredData))
-        dispatch(addTotalRain(calculateTotalRain(filteredData)))
+
+        if(filteredData.length > 0) {
+            dispatch(addRainDataFiltered(filteredData))
+            dispatch(addTotalRain(calculateTotalRain(filteredData)))
+        } else {
+            toast.error('Det finnes ingen regndager mellom disse datoene.')
+        }
     }
 
     function convertDateString(date) {
