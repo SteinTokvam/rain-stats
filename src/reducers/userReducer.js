@@ -1,6 +1,7 @@
 const initialState = {
     email: '',
-    password: ''
+    password: '',
+    uid: ''
 }
 
 const userReducer = (state = initialState, action) => {
@@ -11,14 +12,19 @@ const userReducer = (state = initialState, action) => {
                 email: action.payload
             };
         case 'SET_PASSWORD': 
-        return {
-            ...state,
-            password: action.payload
-        }
+            return {
+                ...state,
+                password: action.payload
+            }
         case 'DELETE_PASSWORD':
             return {
                 ...state,
                 password: ''
+            }
+        case 'SET_UID':
+            return {
+                ...state,
+                uid: action.payload,
             }
         default:
             return state;

@@ -19,3 +19,10 @@ export const deletePassword = () => {
         payload: '',
     };
 };
+
+export const setUID = (uid) => {
+    return {
+        type: 'SET_UID',
+        payload: uid,
+    };
+};

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword } from "../actions/User";
+import { deletePassword, setEmail, setPassword, setUID } from "../actions/User";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp(){
     const email = useSelector(state => state.rootReducer.user.email);
@@ -8,6 +9,7 @@ export default function SignUp(){
     const [tmpPass, setTmpPass] = useState('');
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -18,15 +20,22 @@ export default function SignUp(){
                 password: password
             })
         }
-        console.log(req)
+        dispatch(deletePassword());
         if(validatePassword(tmpPass)) {
             fetch('https://rain-stats-serverless.vercel.app/api/user/signup', req)
             .then(response => response.json())
-            .then(res => console.log(res))
+            .then(res => {
+                if(res.uid.length > 0) {
+                    dispatch(setUID(res.uid))
+                    navigate('/');
+                    return
+                }
+                throw new Error('Kunne ikke logge inn bruker.')
+            })
+            .catch(e => e.message)
         } else {
             console.warn("Passord er ikke like")
         }
-        
     }
 
     function validatePassword(passwordRepeat) {
