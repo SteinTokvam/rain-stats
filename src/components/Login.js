@@ -35,6 +35,14 @@ export default function Login() {
             .catch(e => e.message)
     }
 
+    /**
+     * Denne metoden er ikke klar enda.
+     * 
+     * Den skal sjekke om den aktuelle brukeren har autentisert seg mot netatmo eller ikke. har den det så går vi videre. har den ikke det så 
+     * må man i gang med autentiseringsflyten.
+     * Denne metoden redirecter deg til netatmo, som etter man godkjenner/avslår sender deg til dashboardet som har mer kode for å hente ut refresh_token
+     * @see Dashboard.getQueryCode()
+     */
     function authenticateWithNetatmo(){
         const uuid = crypto.randomUUID();
         window.sessionStorage.setItem("uuid", uuid);
@@ -44,7 +52,7 @@ export default function Login() {
 
     return(
         <div>
-            {authenticateWithNetatmo()}
+            {/*authenticateWithNetatmo()*/}
             <form onSubmit={handleSubmit}>
                 <div>
                     <p>E-post:</p>

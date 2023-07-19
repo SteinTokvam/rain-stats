@@ -110,8 +110,18 @@ export default function Dashboard() {
       </div>
       );
 
+      /*
+      * Dette er en metode som skal kalles etter at bruker logger inn/registerer seg og ikke har autentisert seg mot netatmo enda.
+      * Når brukeren får denne koden, så henter man ut refresh_token, som lagres i firebase, sammen med en variabel som settes til true.
+      * Kan så sjekke om brukeren har denne variabelen, så dropper man å prøve å reautentisere seg på nytt.
+      * Metoden er ikke i bruk enda!
+      */
     function getQueryCode() {
         const uuid = window.sessionStorage.getItem("uuid");
+        if(uuid === null) {
+            console.log('uuid er ikke satt.. ting er under utvikling enda')
+            return
+        }
         if(uuid === searchParams.get('state')) {
             console.log('UUID er lik.');
             fetch('http://localhost:3000/api/netatmo/token', {
@@ -129,7 +139,6 @@ export default function Dashboard() {
     return(
         <div className="Dashboard">
             {rainDataFiltered.length > 0 ? <>
-               { getQueryCode()}
                 <Total totalRain={totalRain}/>
                 <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key} og {rainDataFiltered[rainDataFiltered.length-1].key} og 
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>

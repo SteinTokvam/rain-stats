@@ -5,6 +5,7 @@ import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Footer from './components/Footer';
 import { Toaster } from 'react-hot-toast';
+import ProtectedRoute from './components/ProtectedRoute';
 
 
 function App() {
@@ -15,7 +16,11 @@ function App() {
             <Routes>
               <Route path='/login' element={ <Login /> } />
               <Route path='/register' element={ <SignUp /> } />
-              <Route path='/' element={ <Dashboard /> } />
+              <Route path='/' element={ 
+              <ProtectedRoute>
+                <Dashboard /> 
+              </ProtectedRoute>
+              } />
             </Routes>
           </div>
         <Footer />
