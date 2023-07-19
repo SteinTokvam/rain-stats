@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setPassword, deletePassword, setUID } from "../actions/User";
 import { useNavigate } from "react-router-dom";
@@ -55,6 +56,7 @@ export default function Login() {
             {/*authenticateWithNetatmo()*/}
             <form onSubmit={handleSubmit}>
                 <div>
+                    <h1>Logg inn:</h1>
                     <p>E-post:</p>
                     <input type="text" value={email} onChange={(e) => dispatch(setEmail(e.target.value))}/>
                     <p>Passord:</p>
@@ -62,6 +64,7 @@ export default function Login() {
                 </div>
                 <input type="submit" value="Logg inn" />
             </form>
+            <p>Har du ikke bruker? <Link to="/register">Register deg!</Link></p>
         </div>
     )
 }

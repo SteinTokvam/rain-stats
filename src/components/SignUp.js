@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePassword, setEmail, setPassword, setUID } from "../actions/User";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SignUp(){
     const email = useSelector(state => state.rootReducer.user.email);
@@ -20,12 +20,14 @@ export default function SignUp(){
                 password: password
             })
         }
-        dispatch(deletePassword());
+        
         if(validatePassword(tmpPass)) {
-            fetch('https://rain-stats-serverless.vercel.app/api/user/signup', req)
+            fetch('http://localhost:3000/api/user/signup', req)//'https://rain-stats-serverless.vercel.app/api/user/signup', req)
             .then(response => response.json())
             .then(res => {
                 if(res.uid.length > 0) {
+                    dispatch(deletePassword());
+                    setTmpPass('')
                     dispatch(setUID(res.uid))
                     navigate('/');
                     return
@@ -39,11 +41,14 @@ export default function SignUp(){
     }
 
     function validatePassword(passwordRepeat) {
+        console.log(passwordRepeat)
+        console.log(password)
         return passwordRepeat === password
     }
 
     return(
         <div>
+            <h1>Register ny bruker</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <p>E-post:</p>
@@ -55,6 +60,7 @@ export default function SignUp(){
                 </div>
                 <input type="submit" value="Logg inn" />
             </form>
+            <p>Har du allerede en bruker? <Link to="/login">Logg inn.</Link></p>
         </div>
     )
 }
