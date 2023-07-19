@@ -27,3 +27,10 @@ export const setUID = (uid) => {
     };
 };
 
+export const removeUID = () => {
+    return {
+        type: 'REMOVE_UID',
+        payload: '',
+    };
+};
+

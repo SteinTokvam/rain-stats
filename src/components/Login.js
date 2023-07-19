@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setPassword, deletePassword, setUID } from "../actions/User";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function Login() {
 
@@ -26,10 +27,13 @@ export default function Login() {
         fetch('https://rain-stats-serverless.vercel.app/api/user/signin', req)
             .then(response => response.json())
             .then(res => {
-                if(res.uid.length > 0) {
+                console.log(res.uid)
+                if(res.uid !== undefined && res.uid.length > 0) {
                     dispatch(setUID(res.uid))
                     navigate('/');
                     return
+                } else {
+                    toast.error('Epost eller passord er feil, eller bruker finnes ikke.')
                 }
                 throw new Error('Kunne ikke logge inn bruker.')
             })

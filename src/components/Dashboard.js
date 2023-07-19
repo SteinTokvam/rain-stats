@@ -9,6 +9,8 @@ import { addTotalRain, addRainData, addRainDataFiltered } from '../actions/Rain'
 import { addFraDato, addTilDato } from '../actions/Date';
 import Spinner from "./Spinner";
 import { toast } from "react-hot-toast";
+import { removeUID } from "../actions/User";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
@@ -16,6 +18,7 @@ export default function Dashboard() {
     const totalRain = useSelector((state) => state.rootReducer.rain.totalRain);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const searchParams = new URLSearchParams(document.location.search)
 
     function calculateTotalRain(list) {
@@ -136,9 +139,20 @@ export default function Dashboard() {
         }
     }
 
+    function handleLogOut(event){
+        event.preventDefault();
+        dispatch(removeUID())
+        navigate('/login')
+    }
+
     return(
         <div className="Dashboard">
-            {rainDataFiltered.length > 0 ? <>
+            
+            {rainDataFiltered.length > 0 ? 
+            <>
+                <form onSubmit={handleLogOut}>
+                    <input type="submit" value="Logg ut" />
+                </form>
                 <Total totalRain={totalRain}/>
                 <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key} og {rainDataFiltered[rainDataFiltered.length-1].key} og 
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>

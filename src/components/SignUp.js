@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePassword, setEmail, setPassword, setUID } from "../actions/User";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function SignUp(){
     const email = useSelector(state => state.rootReducer.user.email);
@@ -36,7 +37,7 @@ export default function SignUp(){
             })
             .catch(e => e.message)
         } else {
-            console.warn("Passord er ikke like")
+            toast.error('Passordene er ikke skrevet likt.')
         }
     }
 
