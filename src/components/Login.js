@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setPassword, deletePassword, setUID } from "../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { authenticateWithNetatmo, needsToAuthorizeNetatmo } from "../NetatmoAuth";
+import { needsToAuthorizeNetatmo } from "../NetatmoAuth";
 
 export default function Login() {
 
