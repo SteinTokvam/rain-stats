@@ -23,7 +23,7 @@ export default function SignUp(){
         }
         
         if(validatePassword(tmpPass)) {
-            fetch('http://localhost:3000/api/user/signup', req)//'https://rain-stats-serverless.vercel.app/api/user/signup', req)
+            fetch('https://rain-stats-serverless.vercel.app/api/user/signup', req)
             .then(response => response.json())
             .then(res => {
                 if(res.uid.length > 0) {
@@ -59,7 +59,7 @@ export default function SignUp(){
                     <p>Gjenta passord:</p>
                     <input type="password" value={tmpPass} onChange={e => setTmpPass(e.target.value)}/>
                 </div>
-                <input type="submit" value="Logg inn" />
+                <input type="submit" value="Registrer bruker" />
             </form>
             <p>Har du allerede en bruker? <Link to="/login">Logg inn.</Link></p>
         </div>
