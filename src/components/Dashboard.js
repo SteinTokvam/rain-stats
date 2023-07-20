@@ -9,7 +9,7 @@ import { addTotalRain, addRainData, addRainDataFiltered } from '../actions/Rain'
 import { addFraDato, addTilDato } from '../actions/Date';
 import Spinner from "./Spinner";
 import { toast } from "react-hot-toast";
-import { removeUID } from "../actions/User";
+import { logOut } from "../actions/User";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
@@ -141,7 +141,7 @@ export default function Dashboard() {
 
     function handleLogOut(event){
         event.preventDefault();
-        dispatch(removeUID())
+        dispatch(logOut())
         navigate('/login')
     }
 

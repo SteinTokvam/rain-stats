@@ -27,9 +27,9 @@ export const setUID = (uid) => {
     };
 };
 
-export const removeUID = () => {
+export const logOut = () => {
     return {
-        type: 'REMOVE_UID',
+        type: 'LOG_OUT',
         payload: '',
     };
 };

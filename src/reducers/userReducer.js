@@ -26,11 +26,8 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 uid: action.payload,
             }
-        case 'REMOVE_UID':
-        return {
-            ...state,
-            uid: '',
-        }
+        case 'LOG_OUT':
+            return initialState
         default:
             return state;
     }

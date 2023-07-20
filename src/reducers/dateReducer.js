@@ -15,6 +15,8 @@ const dateReducer = (state = initialState, action) => {
                 ...state,
                 tilDato: action.payload
             };
+        case 'LOG_OUT':
+            return initialState
         default: 
         return state;
     }
