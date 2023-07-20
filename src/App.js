@@ -6,6 +6,7 @@ import SignUp from './components/SignUp';
 import Footer from './components/Footer';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './components/ProtectedRoute';
+import ForgotPassword from './components/ForgotPassword';
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
             <Routes>
               <Route path='/login' element={ <Login /> } />
               <Route path='/register' element={ <SignUp /> } />
+              <Route path='/forgot' element={ <ForgotPassword /> } />
               <Route path='/' element={ 
               <ProtectedRoute>
                 <Dashboard /> 

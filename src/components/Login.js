@@ -62,12 +62,13 @@ export default function Login() {
                 <div>
                     <h1>Logg inn:</h1>
                     <p>E-post:</p>
-                    <input type="text" value={email} onChange={(e) => dispatch(setEmail(e.target.value))}/>
+                    <input type="text" value={email} onChange={(e) => dispatch(setEmail(e.target.value))} />
                     <p>Passord:</p>
                     <input type="password" value={password} onChange={(e) => dispatch(setPassword(e.target.value))}/>
                 </div>
                 <input type="submit" value="Logg inn" />
             </form>
+            <Link to="/forgot">Glemt passord?</Link>
             <p>Har du ikke bruker? <Link to="/register">Register deg!</Link></p>
         </div>
     )
