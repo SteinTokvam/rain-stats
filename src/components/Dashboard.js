@@ -10,7 +10,7 @@ import { addFraDato, addTilDato } from '../actions/Date';
 import Spinner from "./Spinner";
 import { toast } from "react-hot-toast";
 import { logOut } from "../actions/User";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
@@ -20,7 +20,7 @@ export default function Dashboard() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+    const [searchParams, setSearchParams] = useSearchParams();
 
     function calculateTotalRain(list) {
         var totalRain = 0;
@@ -52,19 +52,6 @@ export default function Dashboard() {
     }
 
       useEffect(() => {
-        async function checkForRefreshToken() {
-            const hasToken = await fetch('http://localhost:3000/api/firebase/getToken', {
-                method: 'POST',
-                body: JSON.stringify({userId: uid})
-            })
-
-            const tokenJson = await hasToken.json()
-            if(await tokenJson.error === 'NO_REFRESH_TOKEN') {
-                return false
-            }
-            return true
-        }
-
         fetchRainData()
 
         
@@ -144,12 +131,11 @@ export default function Dashboard() {
     function handleLogOut(event){
         event.preventDefault();
         dispatch(logOut())
-        navigate('/login')
+        navigate('/login', true)
     }
 
     return(
         <div className="Dashboard">
-            
             {rainDataFiltered.length > 0 ? 
             <>
                 <form onSubmit={handleLogOut}>

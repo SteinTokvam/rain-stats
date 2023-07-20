@@ -1,5 +1,7 @@
-
 const searchParams = new URLSearchParams(document.location.search)
+
+export const needsToAuthorizeNetatmo = (token) => token.error === 'NO_REFRESH_TOKEN'
+
 
 /**
  * Denne metoden er ikke klar enda.
@@ -41,9 +43,12 @@ export async function getQueryCode() {
                 refreshToken: netatmoToken.refresh_token
             })
         })
+
     } else if(searchParams.get('error') === 'access_denied') {
         console.log('Brukeren aksepterte ikke at vi kan hente data fra netatmo')
     } else {
         console.error('UID er IKKE like! ' + uid + ' fra netatmo: ' + searchParams.get('state'))
     }
+    console.dir(searchParams)
+    return searchParams
 }

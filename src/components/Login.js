@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setPassword, deletePassword, setUID } from "../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { authenticateWithNetatmo } from "../NetatmoAuth";
+import { authenticateWithNetatmo, needsToAuthorizeNetatmo } from "../NetatmoAuth";
 
 export default function Login() {
 
@@ -47,8 +47,8 @@ export default function Login() {
                     return {message: res.uid, error: false}
                 } else {
                     toast.error('Epost eller passord er feil, eller bruker finnes ikke.')
+                    return {message:' wrong password or user', error: true}
                 }
-                throw new Error('Kunne ikke logge inn bruker.')
             })
             .catch(e => e.message)
             
@@ -62,14 +62,11 @@ export default function Login() {
 
             const tokenJson = await hasToken.json()
             
-            if(await tokenJson.error === 'NO_REFRESH_TOKEN') {
-                console.log("fant ikke token")
-                authenticateWithNetatmo(logged_in.message)
-            } else {
-                console.log("fant token")
-                navigate('/')
-            }
-            return
+            if(needsToAuthorizeNetatmo(tokenJson)) {
+                console.log('må starte autorisering mot netatmo')
+                //TODO: finn ut av callbacks og slik mot netatmo
+            } 
+            navigate('/')
         }
     }
 
