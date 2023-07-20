@@ -1,5 +1,5 @@
 
-export async function checkForRefreshToken() {
+export async function checkForRefreshToken(uid) {
     const hasToken = await fetch('http://localhost:3000/api/firebase/getToken', {
         method: 'POST',
         body: JSON.stringify({userId: uid})
@@ -10,4 +10,9 @@ export async function checkForRefreshToken() {
         return false
     }
     return true
+}
+
+export function handleSignIn(requset) {
+    return fetch('https://rain-stats-serverless.vercel.app/api/user/signin', requset)
+            .then(response => response.json())
 }

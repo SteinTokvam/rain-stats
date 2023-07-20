@@ -5,6 +5,7 @@ import { setEmail, setPassword, deletePassword, setUID } from "../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { needsToAuthorizeNetatmo } from "../NetatmoAuth";
+import { handleSignIn } from "../firebase";
 
 export default function Login() {
 
@@ -28,9 +29,10 @@ export default function Login() {
     }, [uid, navigate, dispatch])
 
     async function handleSubmit(event) {
-
         event.preventDefault();
-        const req = {
+
+        //sign in user
+        const request = {
             method: 'POST',
             body: JSON.stringify({
                 email: email,
@@ -38,8 +40,7 @@ export default function Login() {
             })
         }
         dispatch(deletePassword())
-        const logged_in = await fetch('https://rain-stats-serverless.vercel.app/api/user/signin', req)
-            .then(response => response.json())
+        const logged_in = await handleSignIn(request)
             .then(res => {
                 console.log(res.uid)
                 if(res.uid !== undefined && res.uid.length > 0) {
@@ -52,21 +53,24 @@ export default function Login() {
             })
             .catch(e => e.message)
             
-        console.log(logged_in)
+        //if has signed in sucessfully
         if(!logged_in.error) {
-            console.log('uid ' + uid)
+            console.log('Has logged in. Getting refresh token from firebase.')
             const hasToken = await fetch('http://localhost:3000/api/firebase/getToken', {
                 method: 'POST',
                 body: JSON.stringify({userId: logged_in.message})
-            })
-
-            const tokenJson = await hasToken.json()
+            }).then(r => r.json())
             
-            if(needsToAuthorizeNetatmo(tokenJson)) {
-                console.log('må starte autorisering mot netatmo')
+            console.log(`Got token response: ${hasToken.error}`)
+            if(needsToAuthorizeNetatmo(hasToken)) {
+                console.log('Needs to start authentication run to netatmo.')
                 //TODO: finn ut av callbacks og slik mot netatmo
-            } 
-            navigate('/')
+            } else {
+                console.log('Got token already')
+            }
+            navigate('/', {replace: true})
+        } else {
+            toast.error('Kunne ikke logge inn. Prøv igjen senere.')
         }
     }
 
