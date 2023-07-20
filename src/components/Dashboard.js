@@ -16,10 +16,11 @@ export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
     const rainDataFiltered = useSelector((state) => state.rootReducer.rain.rainDataFiltered);
     const totalRain = useSelector((state) => state.rootReducer.rain.totalRain);
+    const uid = useSelector((state) => state.rootReducer.user.uid);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const searchParams = new URLSearchParams(document.location.search)
+    
 
     function calculateTotalRain(list) {
         var totalRain = 0;
@@ -29,18 +30,45 @@ export default function Dashboard() {
             return totalRain
     }
 
-      useEffect(() => {
-        fetch('https://rain-stats-serverless.vercel.app/api/netatmo/refresh')
+    function fetchRainData() {
+        fetch('http://localhost:3000/api/netatmo/refresh', 
+        //{
+        //        method: 'POST',
+        //        body: JSON.stringify({
+        //            uid: uid
+        //        })
+        //}
+        )
         .then(response => response.json())
         .then(list => {
+            console.log(list)
             dispatch(addTotalRain(calculateTotalRain(list)))
             dispatch(addRainData(list))
             dispatch(addRainDataFiltered(list))
             dispatch(addFraDato(convertDateString(list[0].key)));
             dispatch(addTilDato(convertDateString(list[list.length-1].key)));
-            return
+            return    
         })
-    }, [dispatch]);
+    }
+
+      useEffect(() => {
+        async function checkForRefreshToken() {
+            const hasToken = await fetch('http://localhost:3000/api/firebase/getToken', {
+                method: 'POST',
+                body: JSON.stringify({userId: uid})
+            })
+
+            const tokenJson = await hasToken.json()
+            if(await tokenJson.error === 'NO_REFRESH_TOKEN') {
+                return false
+            }
+            return true
+        }
+
+        fetchRainData()
+
+        
+    }, [dispatch, uid]);
 
     const max = rainDataFiltered.length > 0 ? rainDataFiltered.reduce(function(prev, current) {
         return (prev.value > current.value) ? prev : current
@@ -112,32 +140,6 @@ export default function Dashboard() {
         </ResponsiveContainer>
       </div>
       );
-
-      /*
-      * Dette er en metode som skal kalles etter at bruker logger inn/registerer seg og ikke har autentisert seg mot netatmo enda.
-      * Når brukeren får denne koden, så henter man ut refresh_token, som lagres i firebase, sammen med en variabel som settes til true.
-      * Kan så sjekke om brukeren har denne variabelen, så dropper man å prøve å reautentisere seg på nytt.
-      * Metoden er ikke i bruk enda!
-      */
-    function getQueryCode() {
-        const uuid = window.sessionStorage.getItem("uuid");
-        if(uuid === null) {
-            console.log('uuid er ikke satt.. ting er under utvikling enda')
-            return
-        }
-        if(uuid === searchParams.get('state')) {
-            console.log('UUID er lik.');
-            fetch('http://localhost:3000/api/netatmo/token', {
-                method: 'POST',
-                body: JSON.stringify({'auth_code': searchParams.get('code')})
-            }).then(r => r.json())
-            .then(r => console.log(r))
-        } else if(searchParams.get('error') === 'access_denied') {
-            console.log('Brukeren aksepterte ikke at vi kan hente data fra netatmo')
-        } else {
-            console.error('UUID er IKKE like! ' + uuid + ' fra netatmo: ' + searchParams.get('state'))
-        }
-    }
 
     function handleLogOut(event){
         event.preventDefault();
