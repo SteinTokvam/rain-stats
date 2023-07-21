@@ -10,7 +10,8 @@ import { addFraDato, addTilDato } from '../actions/Date';
 import Spinner from "./Spinner";
 import { toast } from "react-hot-toast";
 import { logOut } from "../actions/User";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getQueryCode } from "../NetatmoAuth";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
@@ -20,7 +21,6 @@ export default function Dashboard() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
 
     function calculateTotalRain(list) {
         var totalRain = 0;
@@ -52,9 +52,7 @@ export default function Dashboard() {
     }
 
       useEffect(() => {
-        fetchRainData()
-
-        
+        getQueryCode().then(() => fetchRainData())
     }, [dispatch, uid]);
 
     const max = rainDataFiltered.length > 0 ? rainDataFiltered.reduce(function(prev, current) {

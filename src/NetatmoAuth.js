@@ -12,9 +12,10 @@ export const needsToAuthorizeNetatmo = (token) => token.error === 'NO_REFRESH_TO
  * @see getQueryCode()
  */
  export function authenticateWithNetatmo(uid){
+    console.log(`uid: ${uid}`)
     window.sessionStorage.setItem("uid", uid);
     
-    window.location.replace(`https://api.netatmo.com/oauth2/authorize?client_id=649c317ca3c5ae50f30b6bea&redirect_uri=http://localhost:3001/rain-stats&scope=read_station&state=${uid}`)
+    //window.location.replace(`https://api.netatmo.com/oauth2/authorize?client_id=649c317ca3c5ae50f30b6bea&redirect_uri=http://localhost:3001/rain-stats&scope=read_station&state=${uid}`)
 }
 
 /*
@@ -26,7 +27,7 @@ export const needsToAuthorizeNetatmo = (token) => token.error === 'NO_REFRESH_TO
 export async function getQueryCode() {
     const uid = window.sessionStorage.getItem("uid");
     if(uid === null) {
-        console.log('uid er ikke satt.. ting er under utvikling enda')
+        console.log('UID not set. Returning.')
         return
     }
     if(uid === searchParams.get('state')) {//etter å ha autentisert så kjører denne en gang til pga uid forandrer seg som kaller på hooken i login. da prøver den å lagre token og tryner
@@ -49,6 +50,6 @@ export async function getQueryCode() {
     } else {
         console.error('UID er IKKE like! ' + uid + ' fra netatmo: ' + searchParams.get('state'))
     }
-    console.dir(searchParams)
+    window.sessionStorage.clear()
     return searchParams
 }

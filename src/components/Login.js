@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setPassword, deletePassword, setUID } from "../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { needsToAuthorizeNetatmo } from "../NetatmoAuth";
+import { authenticateWithNetatmo, needsToAuthorizeNetatmo } from "../NetatmoAuth";
 import { handleSignIn } from "../firebase";
 
 export default function Login() {
@@ -19,13 +19,14 @@ export default function Login() {
     useEffect(() => {
         const searchParams = new URLSearchParams(document.location.search)
         const uidFromParam = searchParams.get('state')
-        if(uidFromParam != null) {
+        if(uidFromParam != null && uidFromParam) {
             console.log(uidFromParam)
             console.log(uid)
+            
             dispatch(setUID(uidFromParam))
             
             navigate('/')
-        }
+        } 
     }, [uid, navigate, dispatch])
 
     async function handleSubmit(event) {
@@ -44,6 +45,7 @@ export default function Login() {
             .then(res => {
                 console.log(res.uid)
                 if(res.uid !== undefined && res.uid.length > 0) {
+                    console.log(`res.uid: ${res.uid}`)
                     dispatch(setUID(res.uid))
                     return {message: res.uid, error: false}
                 } else {
@@ -51,27 +53,29 @@ export default function Login() {
                     return {message:' wrong password or user', error: true}
                 }
             })
+            .then(async (logged_in) => {
+                //if has signed in sucessfully
+                console.log(` logged_in.error: ${logged_in.error}`)
+                if(!logged_in.error) {
+                    console.log('Has logged in. Getting refresh token from firebase.')
+                    const hasToken = await fetch('http://localhost:3000/api/firebase/getToken', {
+                        method: 'POST',
+                        body: JSON.stringify({userId: logged_in.message})
+                    }).then(r => r.json())
+                    
+                    console.log(`Got token error response: ${hasToken.error} - ${hasToken.message}`)
+                    if(needsToAuthorizeNetatmo(hasToken)) {
+                        console.log('Starting authentication run against netatmo.')
+                        console.log(`uid før kall: ${logged_in.message}`)
+                        authenticateWithNetatmo(logged_in.message)
+                    } else {
+                        console.log('Got token from netatmo already')
+                    }
+                } else {
+                    toast.error('Kunne ikke logge inn. Prøv igjen senere.')
+                }
+            })
             .catch(e => e.message)
-            
-        //if has signed in sucessfully
-        if(!logged_in.error) {
-            console.log('Has logged in. Getting refresh token from firebase.')
-            const hasToken = await fetch('http://localhost:3000/api/firebase/getToken', {
-                method: 'POST',
-                body: JSON.stringify({userId: logged_in.message})
-            }).then(r => r.json())
-            
-            console.log(`Got token response: ${hasToken.error}`)
-            if(needsToAuthorizeNetatmo(hasToken)) {
-                console.log('Needs to start authentication run to netatmo.')
-                //TODO: finn ut av callbacks og slik mot netatmo
-            } else {
-                console.log('Got token already')
-            }
-            navigate('/', {replace: true})
-        } else {
-            toast.error('Kunne ikke logge inn. Prøv igjen senere.')
-        }
     }
 
     return(
