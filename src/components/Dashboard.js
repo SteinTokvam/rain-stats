@@ -9,6 +9,7 @@ import { addTotalRain, addRainData, addRainDataFiltered } from '../actions/Rain'
 import { addFraDato, addTilDato } from '../actions/Date';
 import Spinner from "./Spinner";
 import { toast } from "react-hot-toast";
+import { getQueryCode } from "../NetatmoAuth";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
