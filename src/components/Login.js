@@ -19,13 +19,14 @@ export default function Login() {
     useEffect(() => {
         const searchParams = new URLSearchParams(document.location.search)
         const uidFromParam = searchParams.get('state')
+
         if(uidFromParam != null && uidFromParam) {
             console.log(uidFromParam)
             console.log(uid)
             
-            dispatch(setUID(uidFromParam))
+            //dispatch(setUID(uidFromParam))
             
-            navigate('/')
+            //navigate('/')
         } 
     }, [uid, navigate, dispatch])
 

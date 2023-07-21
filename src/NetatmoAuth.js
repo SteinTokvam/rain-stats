@@ -15,7 +15,7 @@ export const needsToAuthorizeNetatmo = (token) => token.error === 'NO_REFRESH_TO
     console.log(`uid: ${uid}`)
     window.sessionStorage.setItem("uid", uid);
     
-    //window.location.replace(`https://api.netatmo.com/oauth2/authorize?client_id=649c317ca3c5ae50f30b6bea&redirect_uri=http://localhost:3001/rain-stats&scope=read_station&state=${uid}`)
+    window.location.replace(`https://api.netatmo.com/oauth2/authorize?client_id=649c317ca3c5ae50f30b6bea&redirect_uri=http://localhost:3001/rain-stats&scope=read_station&state=${uid}`)
 }
 
 /*
