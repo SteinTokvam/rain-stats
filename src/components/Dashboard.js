@@ -27,7 +27,12 @@ export default function Dashboard() {
     }
 
       useEffect(() => {
-        fetch('https://rain-stats-serverless.vercel.app/api/netatmo/refresh')//, {method: 'POST'})
+        fetch('https://rain-stats-serverless.vercel.app/api/netatmo/refresh', {
+            method: 'POST',
+            body: JSON.stringify({
+                refresh_token: localStorage.getItem('refresh_token')
+            })
+        })
         .then(response => response.json())
         .then(list => {
             dispatch(addTotalRain(calculateTotalRain(list)))

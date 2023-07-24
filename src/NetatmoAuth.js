@@ -16,13 +16,14 @@ export async function getNetatmoToken(code) {
         })
     }).then(r => r.json())
 
+    console.log('Got access/refresh token from Netatmo.')
     return res
 }
 
  export function authenticateWithNetatmo(uuid){
-    console.log(`uid: ${uuid}`)
+    console.log(`uuid: ${uuid}`)
     window.sessionStorage.setItem("uuid", uuid);
-    window.location.replace(`https://api.netatmo.com/oauth2/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}/&scope=${scope}&state=${uuid}`)
+    window.location.replace(`https://api.netatmo.com/oauth2/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scope}&state=${uuid}`)
 }
 
 export function hasSavedUUID() {

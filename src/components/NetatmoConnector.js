@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { authenticateWithNetatmo, getNetatmoToken, getQueryCode, hasSavedUUID } from "../NetatmoAuth";
+import { authenticateWithNetatmo, getQueryCode, hasSavedUUID } from "../NetatmoAuth";
 import { useNavigate } from "react-router";
     
 function handleSubmit(event) {
@@ -18,8 +18,8 @@ export default function NetatmoConnector() {
                     console.error(`Failed to get authorization code from Netatmo.`)
                     return
                 }
-                console.log('Got authorization_code from Netatmo.');
-                getNetatmoToken(res)
+                sessionStorage.setItem('auth_code', res)
+                navigate('/coderecieved')
             })
         } else {
             console.warn("Couldn't get code from Netatmo.")
