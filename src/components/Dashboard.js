@@ -9,11 +9,15 @@ import { addTotalRain, addRainData, addRainDataFiltered } from '../actions/Rain'
 import { addFraDato, addTilDato } from '../actions/Date';
 import Spinner from "./Spinner";
 import { toast } from "react-hot-toast";
+import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../utils/DateUtil";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
     const rainDataFiltered = useSelector((state) => state.rootReducer.rain.rainDataFiltered);
     const totalRain = useSelector((state) => state.rootReducer.rain.totalRain);
+
+    const fraDato = useSelector(state => state.rootReducer.date.fraDato);
+    const tilDato = useSelector(state => state.rootReducer.date.tilDato);
     
     const dispatch = useDispatch();
 
@@ -47,23 +51,7 @@ export default function Dashboard() {
         return (prev.value > current.value) ? prev : current
     }) : ''
 
-    function getDate(datoString) {
-        const dateSplit = datoString.split("/")
-            const day = parseInt(dateSplit[0], 10)
-            const month = parseInt(dateSplit[1], 10)-1
-            const year = parseInt(dateSplit[2], 10)
-            return new Date(year, month, day)
-    }
-
-    function getDateReversed(datoString) {
-        const dateSplit = datoString.split("-")
-            const year = parseInt(dateSplit[0], 10)
-            const month = parseInt(dateSplit[1], 10)-1
-            const day = parseInt(dateSplit[2], 10)
-            return new Date(year, month, day)
-    }
-
-    function filtrerDato(fraDato, tilDato) {
+    function filtrerDato(fraDato, tilDato, useDateFromData) {
         const filteredData = rainData.filter(e => {
             const rainDate = getDate(e.key)
             const fraDatoDate = getDateReversed(fraDato)
@@ -72,17 +60,19 @@ export default function Dashboard() {
             return fraDatoDate <= rainDate && rainDate <= tilDatoDate
         })
 
+        if(useDateFromData) {
+            const split = filteredData[0].key.split('/')
+            const reversed = `${split[2]}-${split[1]}-${split[0]}`
+            
+            dispatch(addFraDato(reversed))
+        }
+
         if(filteredData.length > 0) {
             dispatch(addRainDataFiltered(filteredData))
             dispatch(addTotalRain(calculateTotalRain(filteredData)))
         } else {
             toast.error('Det finnes ingen regndager mellom disse datoene.')
         }
-    }
-
-    function convertDateString(date) {
-        const split = date.split('/')
-        return split[2]+'-'+split[1]+'-'+split[0]
     }
 
     const renderChart = (
@@ -118,7 +108,7 @@ export default function Dashboard() {
         <div className="Dashboard">
             {rainDataFiltered.length > 0 ? <>
                 <Total totalRain={totalRain}/>
-                <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key} og {rainDataFiltered[rainDataFiltered.length-1].key} og 
+                <p>Det har regnet <b>{rainDataFiltered.length}</b> dager mellom {rainDataFiltered[0].key === fraDato ? fraDato : dayMonthYear(fraDato)} og {dayMonthYear(tilDato)} og 
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
                 <p>Det har regnet <b>{(totalRain/rainDataFiltered.length).toFixed(2)}</b> i snitt for hver regndag.</p>
                 <DatoFilter submit={filtrerDato} fraDato={convertDateString(rainData[0].key)} tilDato={convertDateString(rainData[rainData.length-1].key)}/>
