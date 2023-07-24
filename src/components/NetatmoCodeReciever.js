@@ -21,7 +21,7 @@ export default function NetatmoCodeReciever(){
                 }
                 return r;
             });
-    }, [])
+    }, [navigate])
     return(
         <div>
             <p>Tilbake fra netatmo. lagrer ned godkjenning.</p>{/*TODO: håndter om bruker ikke godkjenner*/ }
