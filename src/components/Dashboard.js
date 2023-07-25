@@ -35,11 +35,12 @@ export default function Dashboard() {
 
       useEffect(() => {
         function fetchRainData() {
+            
             fetch('http://localhost:3000/api/netatmo/refresh',
             {
                     method: 'POST',
                     body: JSON.stringify({
-                        refresh_token: uid
+                        refresh_token: !uid ? window.sessionStorage.getItem('uid') : uid
                     })
             }
             )

@@ -25,6 +25,7 @@ export default function Login() {
             console.log(uid)
             
             dispatch(setUID(uid))
+            window.sessionStorage.setItem('uid', uid)
             
             navigate('/')
         } 
