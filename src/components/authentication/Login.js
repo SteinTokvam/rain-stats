@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword, deletePassword, setUID } from "../actions/User";
+import { setEmail, setPassword, deletePassword, setUID } from "../../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { authenticateWithNetatmo, needsToAuthorizeNetatmo } from "../NetatmoAuth";
-import { handleSignIn } from "../firebase";
+import { needsToAuthorizeNetatmo } from "../../NetatmoAuth";
+import { handleSignIn } from "../../firebase";
 
 export default function Login() {
 
@@ -20,13 +20,13 @@ export default function Login() {
         const searchParams = new URLSearchParams(document.location.search)
         const uidFromParam = searchParams.get('state')
 
-        if(uidFromParam != null && uidFromParam) {
+        if((uid !== null && uid) || (uidFromParam != null && uidFromParam)) {
             console.log(uidFromParam)
             console.log(uid)
             
-            //dispatch(setUID(uidFromParam))
+            dispatch(setUID(uid))
             
-            //navigate('/')
+            navigate('/')
         } 
     }, [uid, navigate, dispatch])
 
@@ -42,7 +42,7 @@ export default function Login() {
             })
         }
         dispatch(deletePassword())
-        const logged_in = await handleSignIn(request)
+        handleSignIn(request)
             .then(res => {
                 console.log(res.uid)
                 if(res.uid !== undefined && res.uid.length > 0) {
@@ -64,11 +64,14 @@ export default function Login() {
                         body: JSON.stringify({userId: logged_in.message})
                     }).then(r => r.json())
                     
-                    console.log(`Got token error response: ${hasToken.error} - ${hasToken.message}`)
+                    if(hasToken.error) {
+                        console.log(`Got token error response: ${hasToken.error} - ${hasToken.message}`)
+                    }
+                    
                     if(needsToAuthorizeNetatmo(hasToken)) {
                         console.log('Starting authentication run against netatmo.')
                         console.log(`uid før kall: ${logged_in.message}`)
-                        authenticateWithNetatmo(logged_in.message)
+                        
                     } else {
                         console.log('Got token from netatmo already')
                     }

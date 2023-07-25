@@ -1,12 +1,13 @@
 import {Routes, Route} from 'react-router-dom';
 import './App.css';
 import Dashboard from './components/Dashboard';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
 import Footer from './components/Footer';
 import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './components/ProtectedRoute';
-import ForgotPassword from './components/ForgotPassword';
+import ForgotPassword from './components/authentication/ForgotPassword';
+import Login from './components/authentication/Login';
+import SignUp from './components/authentication/SignUp';
+
 
 
 function App() {

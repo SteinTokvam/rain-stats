@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePassword, setEmail, setPassword, setUID } from "../actions/User";
+import { deletePassword, setEmail, setPassword, setUID } from "../../actions/User";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 

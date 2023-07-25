@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setEmail } from "../actions/User";
+import { setEmail } from "../../actions/User";
 import { toast } from "react-hot-toast";
 
 export default function ForgotPassword(){

@@ -11,7 +11,6 @@ import Spinner from "./Spinner";
 import { toast } from "react-hot-toast";
 import { logOut } from "../actions/User";
 import { useNavigate } from "react-router-dom";
-import { getQueryCode } from "../NetatmoAuth";
 import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../utils/DateUtil";
 
 export default function Dashboard() {
@@ -34,29 +33,29 @@ export default function Dashboard() {
             return totalRain
     }
 
-    function fetchRainData() {
-        fetch('http://localhost:3000/api/netatmo/refresh',
-        //{
-        //        method: 'POST',
-        //        body: JSON.stringify({
-        //            uid: uid
-        //        })
-        //}
-        )
-        .then(response => response.json())
-        .then(list => {
-            console.log(list)
-            dispatch(addTotalRain(calculateTotalRain(list)))
-            dispatch(addRainData(list))
-            dispatch(addRainDataFiltered(list))
-            dispatch(addFraDato(convertDateString(list[0].key)));
-            dispatch(addTilDato(convertDateString(list[list.length-1].key)));
-            return
-        })
-    }
-
       useEffect(() => {
-        getQueryCode().then(() => fetchRainData())
+        function fetchRainData() {
+            fetch('http://localhost:3000/api/netatmo/refresh',
+            {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        refresh_token: uid
+                    })
+            }
+            )
+            .then(response => response.json())
+            .then(list => {
+                console.log(list)
+                dispatch(addTotalRain(calculateTotalRain(list)))
+                dispatch(addRainData(list))
+                dispatch(addRainDataFiltered(list))
+                dispatch(addFraDato(convertDateString(list[0].key)));
+                dispatch(addTilDato(convertDateString(list[list.length-1].key)));
+                return
+            })
+        }
+
+        fetchRainData()
     }, [dispatch, uid]);
 
     const max = rainDataFiltered.length > 0 ? rainDataFiltered.reduce(function(prev, current) {
