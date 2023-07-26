@@ -12,6 +12,8 @@ import { toast } from "react-hot-toast";
 import { logOut } from "../actions/User";
 import { useNavigate } from "react-router-dom";
 import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../utils/DateUtil";
+import { getQueryCode, hasSavedUUID } from "../NetatmoAuth";
+import { getRefreshTokenFromFirebase } from "../firebase";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
@@ -55,8 +57,32 @@ export default function Dashboard() {
                 return
             })
         }
+        getRefreshTokenFromFirebase(!uid ? window.sessionStorage.getItem('uid') : uid)
+        .then(token => {
+            if(token.error) {
+                getQueryCode().then(res => {
+                    if(res) {
+                        if(res.error) {
+                            console.error(`Failed to get authorization code from Netatmo.`)
+                            navigate('/login')
+                            return
+                        }
+                        sessionStorage.setItem('auth_code', res)
+                        navigate('/coderecieved')
+                    }
+                })
+            } else {
+                const currentUrl = window.location.href.split('?')
+                if(currentUrl.length > 1) {
+                    const endpoint = currentUrl[1].split('#')
+                    console.log(currentUrl)
+                    window.location.replace(currentUrl[0])
+                }
+                fetchRainData()
+            }
+        })
 
-        fetchRainData()
+        //fetchRainData()
     }, [dispatch, uid]);
 
     const max = rainDataFiltered.length > 0 ? rainDataFiltered.reduce(function(prev, current) {
@@ -119,6 +145,7 @@ export default function Dashboard() {
     function handleLogOut(event){
         event.preventDefault();
         dispatch(logOut())
+        window.sessionStorage.clear()
         navigate('/login', true)
     }
 

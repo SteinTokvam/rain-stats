@@ -26,24 +26,29 @@ export default function SignUp(){
             fetch('https://rain-stats-serverless.vercel.app/api/user/signup', req)
             .then(response => response.json())
             .then(res => {
+                if(res.errorCode) {
+                    if(res.errorCode === 'auth/weak-password') {
+                        toast.error('Passord må inneholde minst 6 tegn.')
+                    }
+                } 
                 if(res.uid.length > 0) {
                     dispatch(deletePassword());
                     setTmpPass('')
                     dispatch(setUID(res.uid))
-                    navigate('/');
+                    toast.success('Gratulerer med din nye bruker!')
+                    navigate('/login');
                     return
                 }
+                
                 throw new Error('Kunne ikke logge inn bruker.')
             })
             .catch(e => e.message)
-        } else {
+        } else {//TODO: trenger å skrive en feilmelding dersom man prøver å bruke et passord som er for kort
             toast.error('Passordene er ikke skrevet likt.')
         }
     }
 
     function validatePassword(passwordRepeat) {
-        console.log(passwordRepeat)
-        console.log(password)
         return passwordRepeat === password
     }
 

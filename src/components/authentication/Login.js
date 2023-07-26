@@ -5,7 +5,7 @@ import { setEmail, setPassword, deletePassword, setUID } from "../../actions/Use
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { needsToAuthorizeNetatmo } from "../../NetatmoAuth";
-import { handleSignIn } from "../../firebase";
+import { getRefreshTokenFromFirebase, handleSignIn } from "../../firebase";
 
 export default function Login() {
 
@@ -27,7 +27,7 @@ export default function Login() {
             dispatch(setUID(uid))
             window.sessionStorage.setItem('uid', uid)
             
-            navigate('/')
+            navigate('/connect')
         } 
     }, [uid, navigate, dispatch])
 
@@ -60,10 +60,7 @@ export default function Login() {
                 console.log(` logged_in.error: ${logged_in.error}`)
                 if(!logged_in.error) {
                     console.log('Has logged in. Getting refresh token from firebase.')
-                    const hasToken = await fetch('http://localhost:3000/api/firebase/getToken', {
-                        method: 'POST',
-                        body: JSON.stringify({userId: logged_in.message})
-                    }).then(r => r.json())
+                    const hasToken = await getRefreshTokenFromFirebase(logged_in.message)
                     
                     if(hasToken.error) {
                         console.log(`Got token error response: ${hasToken.error} - ${hasToken.message}`)
@@ -72,9 +69,11 @@ export default function Login() {
                     if(needsToAuthorizeNetatmo(hasToken)) {
                         console.log('Starting authentication run against netatmo.')
                         console.log(`uid før kall: ${logged_in.message}`)
+                        navigate('/connect')
                         
                     } else {
                         console.log('Got token from netatmo already')
+                        navigate('/')
                     }
                 } else {
                     toast.error('Kunne ikke logge inn. Prøv igjen senere.')

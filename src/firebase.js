@@ -16,3 +16,12 @@ export function handleSignIn(requset) {
     return fetch('https://rain-stats-serverless.vercel.app/api/user/signin', requset)
             .then(response => response.json())
 }
+
+export function getRefreshTokenFromFirebase(uid) {
+    return fetch('http://localhost:3000/api/firebase/getToken', 
+        {
+            method: 'POST',
+            body: JSON.stringify({userId: uid})
+        }
+    ).then(r => r.json())
+}

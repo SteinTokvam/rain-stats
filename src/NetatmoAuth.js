@@ -16,7 +16,6 @@ export async function getNetatmoToken(code) {
         })
     }).then(r => r.json())
 
-    console.log('Got access/refresh token from Netatmo.')
     return res
 }
 
@@ -33,8 +32,8 @@ export function hasSavedUUID() {
 export async function getQueryCode() {
     const uuid = window.sessionStorage.getItem("uuid");
     if(uuid === null) {
-        console.log('UIUD not set. Returning.')
-        return
+        console.log('UUID not set. Returning.')
+        return {error: true}
     }
     if(uuid === searchParams.get('state') && searchParams.get('code') !== null) {
         console.log('UUID er lik.');
