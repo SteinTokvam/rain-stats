@@ -38,7 +38,7 @@ export default function Dashboard() {
       useEffect(() => {
         function fetchRainData() {
             
-            fetch('http://localhost:3000/api/netatmo/refresh',
+            fetch('https://rain-stats-serverless.vercel.app/api/netatmo/refresh',
             {
                     method: 'POST',
                     body: JSON.stringify({
@@ -71,6 +71,7 @@ export default function Dashboard() {
                             return
                         }
                         sessionStorage.setItem('auth_code', res)
+                        console.log('går til /coderecieved')
                         navigate('/coderecieved')
                     }
                 })

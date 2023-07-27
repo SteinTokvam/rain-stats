@@ -16,7 +16,7 @@ export default function NetatmoCodeReciever(){
                 //lagre ned
                 if(r !== undefined && r.refresh_token !== undefined) {
                     console.log('Got access/refresh token from Netatmo.')
-                    fetch('http://localhost:3000/api/firebase/token', {
+                    fetch('https://rain-stats-serverless.vercel.app/api/firebase/token', {
                         method: 'POST',
                         body: JSON.stringify({
                             uid: !uid ? window.sessionStorage.getItem('uid') : uid,
@@ -24,13 +24,14 @@ export default function NetatmoCodeReciever(){
                         })
                     })
                 }
-                
+
                 if(!r.error) {
                     navigate('/')
+                    return
                 } else {
                     toast.error(r.error)
                 }
-                return r;
+                return;
             });
     }, [navigate])
     return(

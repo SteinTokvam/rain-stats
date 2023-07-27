@@ -1,6 +1,6 @@
 const searchParams = new URLSearchParams(document.location.search)
 
-const redirect_uri = 'http://localhost:3001';
+const redirect_uri = 'https://steintokvam.github.io/rain-stats/';
 const scope = 'read_station'
 const client_id = '649c317ca3c5ae50f30b6bea';
 
@@ -8,7 +8,7 @@ export const needsToAuthorizeNetatmo = (token) => token.error === 'NO_REFRESH_TO
 
 
 export async function getNetatmoToken(code) {
-    const res = await fetch('http://localhost:3000/api/netatmo/token',{
+    const res = await fetch('https://rain-stats-serverless.vercel.app/api/netatmo/token',{
         method: 'POST',
         body:JSON.stringify({
             auth_code: code,
