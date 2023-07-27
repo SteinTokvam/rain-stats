@@ -64,7 +64,10 @@ export default function Dashboard() {
                     if(res) {
                         if(res.error) {
                             console.error(`Failed to get authorization code from Netatmo.`)
-                            navigate('/login')
+                            window.sessionStorage.clear()
+                            //toast.error('Du godto ikke bruk av dine Netatmo data. Logger ut...')
+                            dispatch(logOut())
+                            window.location.replace('http://localhost:3001')//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload i stedet for
                             return
                         }
                         sessionStorage.setItem('auth_code', res)
