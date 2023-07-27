@@ -12,7 +12,7 @@ import { toast } from "react-hot-toast";
 import { logOut } from "../actions/User";
 import { useNavigate } from "react-router-dom";
 import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../utils/DateUtil";
-import { getQueryCode, hasSavedUUID } from "../NetatmoAuth";
+import { getQueryCode } from "../NetatmoAuth";
 import { getRefreshTokenFromFirebase } from "../firebase";
 
 export default function Dashboard() {
@@ -78,7 +78,6 @@ export default function Dashboard() {
             } else {
                 const currentUrl = window.location.href.split('?')
                 if(currentUrl.length > 1) {
-                    const endpoint = currentUrl[1].split('#')
                     console.log(currentUrl)
                     window.location.replace(currentUrl[0])
                 }
@@ -87,7 +86,7 @@ export default function Dashboard() {
         })
 
         //fetchRainData()
-    }, [dispatch, uid]);
+    }, [dispatch, uid, navigate]);
 
     const max = rainDataFiltered.length > 0 ? rainDataFiltered.reduce(function(prev, current) {
         return (prev.value > current.value) ? prev : current
