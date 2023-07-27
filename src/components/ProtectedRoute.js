@@ -6,10 +6,8 @@ export default function ProtectedRoute({ children }) {
   const uidFromState = useSelector(state => state.rootReducer.user.uid)
 
     if (!uidFromSessionStorage && !uidFromState) {
-      console.log('logger ut')
       return <Navigate to="/login" replace />;
     }
-    console.log('får se komponent')
   
     return children;
   };
