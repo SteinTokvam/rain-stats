@@ -26,3 +26,11 @@ export const setUID = (uid) => {
         payload: uid,
     };
 };
+
+export const logOut = () => {
+    return {
+        type: 'LOG_OUT',
+        payload: '',
+    };
+};
+

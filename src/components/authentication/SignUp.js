@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePassword, setEmail, setPassword, setUID } from "../actions/User";
-import { useNavigate } from "react-router-dom";
+import { deletePassword, setEmail, setPassword, setUID } from "../../actions/User";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function SignUp(){
     const email = useSelector(state => state.rootReducer.user.email);
@@ -20,21 +21,30 @@ export default function SignUp(){
                 password: password
             })
         }
-        dispatch(deletePassword());
+        
         if(validatePassword(tmpPass)) {
             fetch('https://rain-stats-serverless.vercel.app/api/user/signup', req)
             .then(response => response.json())
             .then(res => {
+                if(res.errorCode) {
+                    if(res.errorCode === 'auth/weak-password') {
+                        toast.error('Passord må inneholde minst 6 tegn.')
+                    }
+                } 
                 if(res.uid.length > 0) {
+                    dispatch(deletePassword());
+                    setTmpPass('')
                     dispatch(setUID(res.uid))
-                    navigate('/');
+                    toast.success('Gratulerer med din nye bruker!')
+                    navigate('/login');
                     return
                 }
+                
                 throw new Error('Kunne ikke logge inn bruker.')
             })
             .catch(e => e.message)
-        } else {
-            console.warn("Passord er ikke like")
+        } else {//TODO: trenger å skrive en feilmelding dersom man prøver å bruke et passord som er for kort
+            toast.error('Passordene er ikke skrevet likt.')
         }
     }
 
@@ -44,6 +54,7 @@ export default function SignUp(){
 
     return(
         <div>
+            <h1>Register ny bruker</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <p>E-post:</p>
@@ -53,8 +64,9 @@ export default function SignUp(){
                     <p>Gjenta passord:</p>
                     <input type="password" value={tmpPass} onChange={e => setTmpPass(e.target.value)}/>
                 </div>
-                <input type="submit" value="Logg inn" />
+                <input type="submit" value="Registrer bruker" />
             </form>
+            <p>Har du allerede en bruker? <Link to="/login">Logg inn.</Link></p>
         </div>
     )
 }

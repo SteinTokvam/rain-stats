@@ -21,6 +21,8 @@ const rainReducer = (state = initialState, action) => {
                 ...state,
                 totalRain: action.payload
             }
+        case 'LOG_OUT':
+            return initialState
         default:
             return state;
     }
