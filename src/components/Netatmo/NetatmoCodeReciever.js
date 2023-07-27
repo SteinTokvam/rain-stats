@@ -33,7 +33,7 @@ export default function NetatmoCodeReciever(){
                 }
                 return;
             });
-    }, [navigate])
+    }, [navigate, uid])
     return(
         <div>
             <p>Tilbake fra netatmo. lagrer ned godkjenning.</p>
