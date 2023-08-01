@@ -1,6 +1,7 @@
+import { base_url } from "./utils/Urls";
+
 const searchParams = new URLSearchParams(document.location.search)
 
-const redirect_uri = 'https://steintokvam.github.io/rain-stats/';
 const scope = 'read_station'
 const client_id = '649c317ca3c5ae50f30b6bea';
 
@@ -8,11 +9,11 @@ export const needsToAuthorizeNetatmo = (token) => token.error === 'NO_REFRESH_TO
 
 
 export async function getNetatmoToken(code) {
-    const res = await fetch('https://rain-stats-serverless.vercel.app/api/netatmo/token',{
+    const res = await fetch(`${base_url.backend}/api/netatmo/token`,{
         method: 'POST',
         body:JSON.stringify({
             auth_code: code,
-            redirect_uri: redirect_uri
+            redirect_uri: base_url.redirect_uri
         })
     }).then(r => r.json())
 
@@ -22,7 +23,7 @@ export async function getNetatmoToken(code) {
  export function authenticateWithNetatmo(uuid){
     console.log(`uuid: ${uuid}`)
     window.sessionStorage.setItem("uuid", uuid);
-    window.location.replace(`https://api.netatmo.com/oauth2/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&scope=${scope}&state=${uuid}`)
+    window.location.replace(`${base_url.netatmo}/oauth2/authorize?client_id=${client_id}&redirect_uri=${base_url.redirect_uri}&scope=${scope}&state=${uuid}`)
 }
 
 export function hasSavedUUID() {

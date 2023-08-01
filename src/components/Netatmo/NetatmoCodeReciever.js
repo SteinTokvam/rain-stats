@@ -3,6 +3,7 @@ import { getNetatmoToken } from "../../NetatmoAuth"
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { base_url } from "../../utils/Urls";
 
 
 export default function NetatmoCodeReciever(){
@@ -16,7 +17,7 @@ export default function NetatmoCodeReciever(){
                 //lagre ned
                 if(r !== undefined && r.refresh_token !== undefined) {
                     console.log('Got access/refresh token from Netatmo.')
-                    fetch('https://rain-stats-serverless.vercel.app/api/firebase/token', {
+                    fetch(`${base_url.backend}/api/firebase/token`, {
                         method: 'POST',
                         body: JSON.stringify({
                             uid: !uid ? window.sessionStorage.getItem('uid') : uid,

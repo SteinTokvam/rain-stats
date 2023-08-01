@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setEmail } from "../../actions/User";
 import { toast } from "react-hot-toast";
+import { base_url } from "../../utils/Urls";
 
 export default function ForgotPassword(){
     
@@ -12,7 +13,7 @@ export default function ForgotPassword(){
 
     function handleSubmit(event) {
         event.preventDefault();
-        fetch('https://rain-stats-serverless.vercel.app/api/user/forgot', {
+        fetch(`${base_url.backend}/api/user/forgot`, {
             method: 'POST',
             body: JSON.stringify({
                 email: email

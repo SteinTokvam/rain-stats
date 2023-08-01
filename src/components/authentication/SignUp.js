@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePassword, setEmail, setPassword, setUID } from "../../actions/User";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { base_url } from "../../utils/Urls";
 
 export default function SignUp(){
     const email = useSelector(state => state.rootReducer.user.email);
@@ -23,7 +24,7 @@ export default function SignUp(){
         }
         
         if(validatePassword(tmpPass)) {
-            fetch('https://rain-stats-serverless.vercel.app/api/user/signup', req)
+            fetch(`${base_url.backend}/api/user/signup`, req)
             .then(response => response.json())
             .then(res => {
                 if(res.errorCode) {

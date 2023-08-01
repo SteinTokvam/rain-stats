@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../utils/DateUtil";
 import { getQueryCode } from "../NetatmoAuth";
 import { getRefreshTokenFromFirebase } from "../firebase";
+import { base_url } from "../utils/Urls";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
@@ -38,7 +39,7 @@ export default function Dashboard() {
       useEffect(() => {
         function fetchRainData() {
             
-            fetch('https://rain-stats-serverless.vercel.app/api/netatmo/refresh',
+            fetch(`${base_url.backend}/api/netatmo/refresh`,
             {
                     method: 'POST',
                     body: JSON.stringify({
@@ -67,7 +68,7 @@ export default function Dashboard() {
                             window.sessionStorage.clear()
                             //toast.error('Du godtok ikke bruk av dine Netatmo data. Logger ut...')
                             dispatch(logOut())
-                            window.location.replace('https://steintokvam.github.io/rain-stats')//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload i stedet for
+                            window.location.replace(base_url.redirect_uri)//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload i stedet for
                             return
                         }
                         sessionStorage.setItem('auth_code', res)

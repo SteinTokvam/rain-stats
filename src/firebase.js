@@ -1,6 +1,7 @@
+import { base_url } from "./utils/Urls"
 
 export async function checkForRefreshToken(uid) {
-    const hasToken = await fetch('https://rain-stats-serverless.vercel.app/api/firebase/getToken', {
+    const hasToken = await fetch(`${base_url.backend}/api/firebase/getToken`, {
         method: 'POST',
         body: JSON.stringify({userId: uid})
     })
@@ -13,12 +14,12 @@ export async function checkForRefreshToken(uid) {
 }
 
 export function handleSignIn(requset) {
-    return fetch('https://rain-stats-serverless.vercel.app/api/user/signin', requset)
+    return fetch(`${base_url.backend}/api/user/signin`, requset)
             .then(response => response.json())
 }
 
 export function getRefreshTokenFromFirebase(uid) {
-    return fetch('https://rain-stats-serverless.vercel.app/api/firebase/getToken', 
+    return fetch(`${base_url.backend}/api/firebase/getToken`, 
         {
             method: 'POST',
             body: JSON.stringify({userId: uid})
