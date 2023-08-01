@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { getNetatmoToken } from "../../NetatmoAuth"
+import { getNetatmoToken } from "../../utils/NetatmoAuth"
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";

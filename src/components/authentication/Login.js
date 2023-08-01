@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEmail, setPassword, deletePassword, setUID } from "../../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { needsToAuthorizeNetatmo } from "../../NetatmoAuth";
-import { getRefreshTokenFromFirebase, handleSignIn } from "../../firebase";
+import { needsToAuthorizeNetatmo } from "../../utils/NetatmoAuth";
+import { getRefreshTokenFromFirebase, handleSignIn } from "../../utils/firebase";
 
 export default function Login() {
 

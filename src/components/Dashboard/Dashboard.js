@@ -5,16 +5,16 @@ import Tabell from "./Tabell";
 import DatoFilter from "./DatoFilter";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useSelector, useDispatch } from 'react-redux';
-import { addTotalRain, addRainData, addRainDataFiltered } from '../actions/Rain';
-import { addFraDato, addTilDato } from '../actions/Date';
-import Spinner from "./Spinner";
+import { addTotalRain, addRainData, addRainDataFiltered } from '../../actions/Rain';
+import { addFraDato, addTilDato } from '../../actions/Date';
+import Spinner from "../Spinner";
 import { toast } from "react-hot-toast";
-import { logOut } from "../actions/User";
+import { logOut } from "../../actions/User";
 import { useNavigate } from "react-router-dom";
-import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../utils/DateUtil";
-import { getQueryCode } from "../NetatmoAuth";
-import { getRefreshTokenFromFirebase } from "../firebase";
-import { base_url } from "../utils/Urls";
+import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../../utils/DateUtil";
+import { getQueryCode } from "../../utils/NetatmoAuth";
+import { getRefreshTokenFromFirebase } from "../../utils/firebase";
+import { base_url } from "../../utils/Urls";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);

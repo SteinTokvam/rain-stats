@@ -1,4 +1,4 @@
-import { authenticateWithNetatmo } from "../../NetatmoAuth";
+import { authenticateWithNetatmo } from "../../utils/NetatmoAuth";
     
 function handleSubmit(event) {
     event.preventDefault();

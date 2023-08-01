@@ -1,4 +1,4 @@
-import { base_url } from "./utils/Urls"
+import { base_url } from "./Urls"
 
 export async function checkForRefreshToken(uid) {
     const hasToken = await fetch(`${base_url.backend}/api/firebase/getToken`, {

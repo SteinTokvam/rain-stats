@@ -1,4 +1,4 @@
-import { base_url } from "./utils/Urls";
+import { base_url } from "./Urls";
 
 const searchParams = new URLSearchParams(document.location.search)
 

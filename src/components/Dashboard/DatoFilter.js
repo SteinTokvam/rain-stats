@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addFraDato, addTilDato } from "../actions/Date";
-import { handleDates } from "../utils/DateUtil";
+import { addFraDato, addTilDato } from "../../actions/Date";
+import { handleDates } from "../../utils/DateUtil";
 
 
 export default function DatoFilter(props){
