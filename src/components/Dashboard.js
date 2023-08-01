@@ -65,9 +65,9 @@ export default function Dashboard() {
                         if(res.error) {
                             console.error(`Failed to get authorization code from Netatmo.`)
                             window.sessionStorage.clear()
-                            //toast.error('Du godto ikke bruk av dine Netatmo data. Logger ut...')
+                            //toast.error('Du godtok ikke bruk av dine Netatmo data. Logger ut...')
                             dispatch(logOut())
-                            window.location.replace('http://localhost:3001')//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload i stedet for
+                            window.location.replace('https://steintokvam.github.io/rain-stats')//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload i stedet for
                             return
                         }
                         sessionStorage.setItem('auth_code', res)
