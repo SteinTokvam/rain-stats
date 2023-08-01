@@ -30,6 +30,20 @@ export default function SignUp(){
                 if(res.errorCode) {
                     if(res.errorCode === 'auth/weak-password') {
                         toast.error('Passord må inneholde minst 6 tegn.')
+                    } else if(res.errorCode === 'auth/email-already-in-use') {
+                        toast.error(t => (
+                            <span>
+                                Det finnes allerede en bruker med denne e-post adressen.
+                                <br />
+                                <button onClick={() => {
+                                    toast.dismiss(t.id)
+                                    navigate('/login')
+                                    }
+                                } >
+                                    Logg inn
+                                </button>
+                            </span>
+                        ))
                     }
                 } 
                 if(res.uid.length > 0) {
