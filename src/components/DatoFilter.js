@@ -32,9 +32,10 @@ export default function DatoFilter(props){
 
     function lastMonth(event){
         const fra = new Date()
+        fra.setDate(1)
         fra.setMonth(fra.getMonth()-1)
         const til = new Date(fra.getFullYear(), fra.getMonth()+1, 0)
-
+        
         const dates = handleDates(event, fra, til)
         dispatch(addFraDato(dates.fra))
         dispatch(addTilDato(dates.til))

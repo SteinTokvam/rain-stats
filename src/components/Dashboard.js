@@ -49,7 +49,6 @@ export default function Dashboard() {
             )
             .then(response => response.json())
             .then(list => {
-                console.log(list)
                 dispatch(addTotalRain(calculateTotalRain(list)))
                 dispatch(addRainData(list))
                 dispatch(addRainDataFiltered(list))
