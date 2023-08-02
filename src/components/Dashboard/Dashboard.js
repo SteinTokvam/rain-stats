@@ -29,9 +29,15 @@ export default function Dashboard() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    function calculateTotalRain(list) {
+
+
+    const hourlyRainData = useSelector(state => state.rootReducer.rain.hourlyRainData)
+
+
+
+    function calculateTotalRain(rainData) {
         var totalRain = 0;
-            list.forEach(element => {
+            rainData.forEach(element => {
                 totalRain = totalRain + element.value
             });
             return totalRain
@@ -41,12 +47,12 @@ export default function Dashboard() {
         function fetchRainData() {
             
             getDataFromNetatmo(uid, '1day')
-            .then(list => {
-                dispatch(addTotalRain(calculateTotalRain(list)))
-                dispatch(addRainData(list))
-                dispatch(addRainDataFiltered(list))
-                dispatch(addFraDato(convertDateString(list[0].key)));
-                dispatch(addTilDato(convertDateString(list[list.length-1].key)));
+            .then(rain => {
+                dispatch(addTotalRain(calculateTotalRain(rain.rainData)))
+                dispatch(addRainData(rain))
+                dispatch(addRainDataFiltered(rain.rainData))
+                dispatch(addFraDato(convertDateString(rain.rainData[0].key)));
+                dispatch(addTilDato(convertDateString(rain.rainData[rain.rainData.length-1].key)));
                 return
             })
         }
@@ -129,7 +135,7 @@ export default function Dashboard() {
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
                 <p>Det har regnet <b>{(totalRain/rainDataFiltered.length).toFixed(2)}</b> i snitt for hver regndag.</p>
                 <DatoFilter submit={filtrerDato} fraDato={convertDateString(rainData[0].key)} tilDato={convertDateString(rainData[rainData.length-1].key)}/>
-                <Graph rainDataFiltered={rainDataFiltered} color='light'/>
+                <Graph rainData={rainDataFiltered} color='light'/>
                 <Tabell rainData={rainDataFiltered}/>
                 
             </> : <Spinner />}

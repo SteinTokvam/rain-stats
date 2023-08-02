@@ -1,6 +1,7 @@
 const initialState = {
     drawerOpen: false,
-    drawerDate: ''
+    drawerDate: '',
+    drawerDateIndex: -1
 }
 
 const siteReducer = (state = initialState, action) => {
@@ -9,8 +10,11 @@ const siteReducer = (state = initialState, action) => {
             return {
                 ...state,
                 drawerOpen: action.payload.open,
-                drawerDate: action.payload.date
+                drawerDate: action.payload.date,
+                drawerDateIndex: action.payload.dateIndex
             }
+        case 'LOG_OUT':
+            return initialState
         default:
             return state;
     }

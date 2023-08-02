@@ -15,11 +15,11 @@ export default function Tabell({rainData}) {
 
     const drawer = useSelector(state => state.rootReducer.site.drawerOpen)
     const drawerDate = useSelector(state => state.rootReducer.site.drawerDate)
+    const drawerDateIndex = useSelector(state => state.rootReducer.site.drawerDateIndex)
     const dispatch = useDispatch()
 
-    function openDrawer(date) {
-        console.log(`open on date ${date}`)
-        dispatch(toggleDrawer({open: true, date: date}))
+    function openDrawer(date, index) {
+        dispatch(toggleDrawer({open: true, date: date, dateIndex: index}))
     }
     
     return(
@@ -34,11 +34,11 @@ export default function Tabell({rainData}) {
                     </TableHead>
                     <TableBody>
                     {
-                        rainData.toReversed().map((row) => (
+                        rainData.map((row, index) => (
                             <TableRow
                             key={row.key}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            onClick={() => openDrawer(row.key)}
+                            onClick={() => openDrawer(row.key, index)}
                             >
                             <TableCell component="th" scope="row">
                                 {row.key}
@@ -51,7 +51,7 @@ export default function Tabell({rainData}) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {drawer ? <MyDrawer date={drawerDate} /> : ''}
+            {drawer ? <MyDrawer date={drawerDate} drawerDateIndex={drawerDateIndex} /> : ''}
         </div>
     )
 }

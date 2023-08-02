@@ -13,6 +13,20 @@ export const addRainDataFiltered = (rainDataFiltered) => {
     };
 };
 
+export const addHourlyRainData = (hourlyRainData) => {
+    return {
+        type: 'ADD_HOURLY_RAIN_DATA',
+        payload: hourlyRainData
+    }
+}
+
+export const removeHourlyData = () => {
+    return {
+        type: 'REMOVE_HOURLY_RAIN_DATA',
+        payload: []
+    }
+}
+
 export const addTotalRain = (totalRain) => {
     return {
         type: 'ADD_TOTAL_RAIN',

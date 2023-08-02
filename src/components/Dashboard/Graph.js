@@ -1,11 +1,12 @@
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
-export default function Graph({rainDataFiltered}) {
+export default function Graph({rainData}) {
+
     return(
         <div style={{ width: '100%', height: 300 }}>
             <ResponsiveContainer>
             <AreaChart
-                data={rainDataFiltered}
+                data={rainData}
                 margin={{
                 top: 10,
                 right: 30,
