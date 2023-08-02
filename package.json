@@ -6,6 +6,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@entur/modal": "^1.7.6",
     "@mui/material": "^5.14.2",
     "@reduxjs/toolkit": "^1.9.5",
     "@testing-library/jest-dom": "^5.17.0",
@@ -19,7 +20,7 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.7.2",
     "web-vitals": "^3.4.0"
-  }, 
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
