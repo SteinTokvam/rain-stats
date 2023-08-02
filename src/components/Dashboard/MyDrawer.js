@@ -33,7 +33,7 @@ export default function MyDrawer({ date, drawerDateIndex }) {
             dispatch(addHourlyRainData(hourlyRain))
             return
         })
-    }, [dispatch ])
+    }, [dispatch, drawerDateIndex, uid, dateUnix])
 
     function renderGraph(){
         if(drawerDateIndex === -1) {

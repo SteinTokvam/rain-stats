@@ -29,12 +29,6 @@ export default function Dashboard() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
-
-    const hourlyRainData = useSelector(state => state.rootReducer.rain.hourlyRainData)
-
-
-
     function calculateTotalRain(rainData) {
         var totalRain = 0;
             rainData.forEach(element => {
