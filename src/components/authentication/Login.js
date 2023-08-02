@@ -45,9 +45,7 @@ export default function Login() {
         dispatch(deletePassword())
         handleSignIn(request)
             .then(res => {
-                console.log(res.uid)
                 if(res.uid !== undefined && res.uid.length > 0) {
-                    console.log(`res.uid: ${res.uid}`)
                     dispatch(setUID(res.uid))
                     return {message: res.uid, error: false}
                 } else {

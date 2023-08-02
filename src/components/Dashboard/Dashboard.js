@@ -85,14 +85,13 @@ export default function Dashboard() {
             }
         })
 
-        //fetchRainData()
     }, [dispatch, uid, navigate]);
 
     const max = rainDataFiltered.length > 0 ? rainDataFiltered.reduce(function(prev, current) {
         return (prev.value > current.value) ? prev : current
     }) : ''
 
-    function filtrerDato(fraDato, tilDato, useDateFromData) {
+    function filtrerDato(fraDato, tilDato, useDateFromData) {//TODO: se på å sette til dato
         const filteredData = rainData.filter(e => {
             const rainDate = getDate(e.key)
             const fraDatoDate = getDateReversed(fraDato)
@@ -112,6 +111,8 @@ export default function Dashboard() {
             dispatch(addRainDataFiltered(filteredData))
             dispatch(addTotalRain(calculateTotalRain(filteredData)))
         } else {
+            dispatch(addFraDato(convertDateString(rainDataFiltered[0].key)))
+            dispatch(addTilDato(convertDateString(rainDataFiltered[rainDataFiltered.length-1].key)))
             toast.error('Det finnes ingen regndager mellom disse datoene.')
         }
     }
