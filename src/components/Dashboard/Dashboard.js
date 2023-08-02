@@ -3,7 +3,6 @@ import './Dashboard.css';
 import Total from "./Total";
 import Tabell from "./Tabell";
 import DatoFilter from "./DatoFilter";
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useSelector, useDispatch } from 'react-redux';
 import { addTotalRain, addRainData, addRainDataFiltered } from '../../actions/Rain';
 import { addFraDato, addTilDato } from '../../actions/Date';
@@ -15,6 +14,8 @@ import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../..
 import { getQueryCode } from "../../utils/NetatmoAuth";
 import { getRefreshTokenFromFirebase } from "../../utils/firebase";
 import { base_url } from "../../utils/Urls";
+import Graph from "./Graph";
+import { getDataFromNetatmo } from "../../utils/Netatmo";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
@@ -39,15 +40,7 @@ export default function Dashboard() {
       useEffect(() => {
         function fetchRainData() {
             
-            fetch(`${base_url.backend}/api/netatmo/refresh`,
-            {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        refresh_token: !uid ? window.sessionStorage.getItem('uid') : uid
-                    })
-            }
-            )
-            .then(response => response.json())
+            getDataFromNetatmo(uid, '1day')
             .then(list => {
                 dispatch(addTotalRain(calculateTotalRain(list)))
                 dispatch(addRainData(list))
@@ -65,7 +58,7 @@ export default function Dashboard() {
                         if(res.error) {
                             console.error(`Failed to get authorization code from Netatmo.`)
                             window.sessionStorage.clear()
-                            //toast.error('Du godtok ikke bruk av dine Netatmo data. Logger ut...')
+
                             dispatch(logOut())
                             window.location.replace(base_url.redirect_uri)//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload i stedet for
                             return
@@ -117,35 +110,6 @@ export default function Dashboard() {
         }
     }
 
-    const renderChart = (
-        <div style={{ width: '100%', height: 300 }}>
-        <ResponsiveContainer>
-          <AreaChart
-            data={rainDataFiltered}
-            margin={{
-              top: 10,
-              right: 30,
-              left: 0,
-              bottom: 0,
-            }}
-          >
-            <defs>
-                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-                </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="key" />
-            <YAxis />
-            <Tooltip />
-            <Area type="monotone" dataKey="value" stroke="#8884d8" name="Nedbør" fillOpacity={1} fill="url(#colorUv)" />
-            <Legend verticalAlign="top" height={36}/>
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
-      );
-
     function handleLogOut(event){
         event.preventDefault();
         dispatch(logOut())
@@ -165,8 +129,9 @@ export default function Dashboard() {
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
                 <p>Det har regnet <b>{(totalRain/rainDataFiltered.length).toFixed(2)}</b> i snitt for hver regndag.</p>
                 <DatoFilter submit={filtrerDato} fraDato={convertDateString(rainData[0].key)} tilDato={convertDateString(rainData[rainData.length-1].key)}/>
-                {renderChart}
+                <Graph rainDataFiltered={rainDataFiltered} color='light'/>
                 <Tabell rainData={rainDataFiltered}/>
+                
             </> : <Spinner />}
             </div>
     )
