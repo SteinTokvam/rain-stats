@@ -19,6 +19,7 @@ import { getDataFromNetatmo } from "../../utils/Netatmo";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
+    const dateUnix = useSelector((state) => state.rootReducer.rain.dateUnix)
     const rainDataFiltered = useSelector((state) => state.rootReducer.rain.rainDataFiltered);
     const totalRain = useSelector((state) => state.rootReducer.rain.totalRain);
     const uid = useSelector((state) => state.rootReducer.user.uid);
@@ -44,7 +45,7 @@ export default function Dashboard() {
             .then(rain => {
                 dispatch(addTotalRain(calculateTotalRain(rain.rainData)))
                 dispatch(addRainData(rain))
-                dispatch(addRainDataFiltered(rain.rainData))
+                dispatch(addRainDataFiltered(rain))
                 dispatch(addFraDato(convertDateString(rain.rainData[0].key)));
                 dispatch(addTilDato(convertDateString(rain.rainData[rain.rainData.length-1].key)));
                 return
@@ -85,12 +86,18 @@ export default function Dashboard() {
     }) : ''
 
     function filtrerDato(fraDato, tilDato, useDateFromData) {//TODO: se på å sette til dato
-        const filteredData = rainData.filter(e => {
+        const keptIndexes = []
+        const filteredData = rainData.filter((e, i) => {
             const rainDate = getDate(e.key)
             const fraDatoDate = getDateReversed(fraDato)
             const tilDatoDate = getDateReversed(tilDato)
             
-            return fraDatoDate <= rainDate && rainDate <= tilDatoDate
+            const filter = fraDatoDate <= rainDate && rainDate <= tilDatoDate
+
+            if(filter) {
+                keptIndexes.push(i)
+            }
+            return filter
         })
 
         if(useDateFromData) {
@@ -101,7 +108,9 @@ export default function Dashboard() {
         }
 
         if(filteredData.length > 0) {
-            dispatch(addRainDataFiltered(filteredData))
+            const rainDataFilter = {rainData: filteredData.toReversed(), dateUnix: dateUnix.filter((elem, index) => keptIndexes.includes(index)).toReversed()}
+            console.log(rainDataFilter)
+            dispatch(addRainDataFiltered(rainDataFilter))
             dispatch(addTotalRain(calculateTotalRain(filteredData)))
         } else {
             dispatch(addFraDato(convertDateString(rainDataFiltered[0].key)))

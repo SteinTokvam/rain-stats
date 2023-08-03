@@ -15,10 +15,11 @@ const rainReducer = (state = initialState, action) => {
                 dateUnix: action.payload.dateUnix.toReversed()
             };
         case 'ADD_RAIN_DATA_FILTERED': 
-        return {
-            ...state,
-            rainDataFiltered: action.payload.toReversed()
-        }
+            return {
+                ...state,
+                rainDataFiltered: action.payload.rainData.toReversed(),
+                dateUnix: action.payload.dateUnix.toReversed()
+            }
         case 'ADD_TOTAL_RAIN':
             return {
                 ...state,
