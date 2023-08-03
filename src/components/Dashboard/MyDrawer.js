@@ -15,19 +15,18 @@ import { getDataFromNetatmo } from '../../utils/Netatmo';
 import { addHourlyRainData, removeHourlyData } from '../../actions/Rain';
 import Spinner from '../Spinner';
 
-export default function MyDrawer({ date, drawerDateIndex }) {
+export default function MyDrawer({ date, dateUnix }) {
     const drawer = useSelector(state => state.rootReducer.site.drawerOpen)
     const hourlyRainData = useSelector(state => state.rootReducer.rain.hourlyRainData)
     const uid = useSelector(state => state.rootReducer.user.uid);
-    const dateUnix = useSelector(state => state.rootReducer.rain.dateUnix)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if(drawerDateIndex === -1) {
+        if(dateUnix === -1) {
             console.warn('Date to search rain data not set.')
             return
         }
-        const date_begin = parseInt(dateUnix[drawerDateIndex]) - 43200
+        const date_begin = parseInt(dateUnix) - 43200
         const date_end = parseInt(date_begin) + 86400
         getDataFromNetatmo(uid, '1hour', date_begin, date_end).then(hourlyRain => {
             function formatHours(date, offsetOneHour) {//foramt date to show only hour number as string. prefixing a 0 if hour < 10
@@ -39,10 +38,10 @@ export default function MyDrawer({ date, drawerDateIndex }) {
             dispatch(addHourlyRainData(ret))
             return
         })
-    }, [dispatch, drawerDateIndex, uid, dateUnix])
+    }, [dispatch, uid, dateUnix])
 
     function renderGraph(){
-        if(drawerDateIndex === -1) {
+        if(dateUnix === -1) {
             return <p>Kunne ikke hente regndata for denne dagen. Prøv igjen senere.</p>
         } 
         return (
@@ -54,7 +53,7 @@ export default function MyDrawer({ date, drawerDateIndex }) {
     }
 
     function dismissDrawer() {
-        dispatch(toggleDrawer({open: false, date: ''}))
+        dispatch(toggleDrawer({open: false, date: '', dateUnix: -1}))
         dispatch(removeHourlyData())
     }
 

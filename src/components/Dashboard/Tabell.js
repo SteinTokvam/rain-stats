@@ -15,11 +15,11 @@ export default function Tabell({rainData}) {
 
     const drawer = useSelector(state => state.rootReducer.site.drawerOpen)
     const drawerDate = useSelector(state => state.rootReducer.site.drawerDate)
-    const drawerDateIndex = useSelector(state => state.rootReducer.site.drawerDateIndex)
+    const dateUnix = useSelector(state => state.rootReducer.site.dateUnix)
     const dispatch = useDispatch()
 
-    function openDrawer(date, index) {
-        dispatch(toggleDrawer({open: true, date: date, dateIndex: index}))
+    function openDrawer(date, dateUnix) {
+        dispatch(toggleDrawer({open: true, date: date, dateUnix: dateUnix}))
     }
     
     return(
@@ -34,11 +34,11 @@ export default function Tabell({rainData}) {
                     </TableHead>
                     <TableBody>
                     {
-                        rainData.map((row, index) => (
+                        rainData.map(row => (
                             <TableRow
                             key={row.key}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            onClick={() => openDrawer(row.key, index)}
+                            onClick={() => openDrawer(row.key, row.dateUnix)}
                             >
                             <TableCell component="th" scope="row">
                                 {row.key}
@@ -51,7 +51,7 @@ export default function Tabell({rainData}) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {drawer ? <MyDrawer date={drawerDate} drawerDateIndex={drawerDateIndex} /> : ''}
+            {drawer ? <MyDrawer date={drawerDate} dateUnix={dateUnix} /> : ''}
         </div>
     )
 }

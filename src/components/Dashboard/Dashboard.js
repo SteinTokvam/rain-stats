@@ -43,11 +43,12 @@ export default function Dashboard() {
             
             getDataFromNetatmo(uid, '1day')
             .then(rain => {
-                dispatch(addTotalRain(calculateTotalRain(rain.rainData)))
+                console.log(rain)
+                dispatch(addTotalRain(calculateTotalRain(rain)))
                 dispatch(addRainData(rain))
                 dispatch(addRainDataFiltered(rain))
-                dispatch(addFraDato(convertDateString(rain.rainData[0].key)));
-                dispatch(addTilDato(convertDateString(rain.rainData[rain.rainData.length-1].key)));
+                dispatch(addFraDato(convertDateString(rain[0].key)));
+                dispatch(addTilDato(convertDateString(rain[rain.length-1].key)));
                 return
             })
         }
@@ -108,9 +109,7 @@ export default function Dashboard() {
         }
 
         if(filteredData.length > 0) {
-            const rainDataFilter = {rainData: filteredData.toReversed(), dateUnix: dateUnix.filter((elem, index) => keptIndexes.includes(index)).toReversed()}
-            console.log(rainDataFilter)
-            dispatch(addRainDataFiltered(rainDataFilter))
+            dispatch(addRainDataFiltered(filteredData.toReversed()))
             dispatch(addTotalRain(calculateTotalRain(filteredData)))
         } else {
             dispatch(addFraDato(convertDateString(rainDataFiltered[0].key)))
@@ -138,7 +137,7 @@ export default function Dashboard() {
                 dagen med mest regn var <b>{max.key}</b> med <b>{max.value}</b> mm!</p>
                 <p>Det har regnet <b>{(totalRain/rainDataFiltered.length).toFixed(2)}</b> i snitt for hver regndag.</p>
                 <DatoFilter submit={filtrerDato} fraDato={convertDateString(rainData[0].key)} tilDato={convertDateString(rainData[rainData.length-1].key)}/>
-                <Graph rainData={rainDataFiltered} color='light'/>
+                <Graph rainData={rainDataFiltered.toReversed()} color='light'/>
                 <Tabell rainData={rainDataFiltered}/>
                 
             </> : <Spinner />}
