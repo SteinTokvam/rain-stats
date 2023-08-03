@@ -19,7 +19,6 @@ import { getDataFromNetatmo } from "../../utils/Netatmo";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
-    const dateUnix = useSelector((state) => state.rootReducer.rain.dateUnix)
     const rainDataFiltered = useSelector((state) => state.rootReducer.rain.rainDataFiltered);
     const totalRain = useSelector((state) => state.rootReducer.rain.totalRain);
     const uid = useSelector((state) => state.rootReducer.user.uid);
@@ -43,7 +42,6 @@ export default function Dashboard() {
             
             getDataFromNetatmo(uid, '1day')
             .then(rain => {
-                console.log(rain)
                 dispatch(addTotalRain(calculateTotalRain(rain)))
                 dispatch(addRainData(rain))
                 dispatch(addRainDataFiltered(rain))
