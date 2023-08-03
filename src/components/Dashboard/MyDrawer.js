@@ -30,7 +30,13 @@ export default function MyDrawer({ date, drawerDateIndex }) {
         const date_begin = parseInt(dateUnix[drawerDateIndex]) - 43200
         const date_end = parseInt(date_begin) + 86400
         getDataFromNetatmo(uid, '1hour', date_begin, date_end).then(hourlyRain => {
-            dispatch(addHourlyRainData(hourlyRain))
+            function formatHours(date, offsetOneHour) {//foramt date to show only hour number as string. prefixing a 0 if hour < 10
+                const hour = offsetOneHour ? date.getHours() + 1 : date.getHours()
+                return hour < 10 ? '0' + hour : hour 
+            }
+
+            const ret = hourlyRain.map(e => {return {key: formatHours(new Date(e.key)) + '-' + (formatHours(new Date(e.key), true)), value: e.value}})
+            dispatch(addHourlyRainData(ret))
             return
         })
     }, [dispatch, drawerDateIndex, uid, dateUnix])
