@@ -1,7 +1,8 @@
 const initialState = {
     email: '',
     password: '',
-    uid: ''
+    uid: '',
+    rememberMe: false
 }
 
 const userReducer = (state = initialState, action) => {
@@ -15,6 +16,11 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 password: action.payload
+            }
+        case 'SET_REMEMBER_ME':
+            return {
+                ...state,
+                rememberMe: action.payload
             }
         case 'DELETE_PASSWORD':
             return {

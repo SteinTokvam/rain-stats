@@ -120,6 +120,7 @@ export default function Dashboard() {
         event.preventDefault();
         dispatch(logOut())
         window.sessionStorage.clear()
+        window.localStorage.clear()
         navigate('/login', true)
     }
 

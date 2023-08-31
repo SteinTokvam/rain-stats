@@ -13,6 +13,13 @@ export const setPassword = (password) => {
     };
 };
 
+export const setRememberMe = (rememberMe) => {
+    return {
+        type: 'SET_REMEMBER_ME',
+        payload: rememberMe,
+    }
+}
+
 export const deletePassword = () => {
     return {
         type: 'DELETE_PASSWORD',

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword, deletePassword, setUID } from "../../actions/User";
+import { setEmail, setPassword, deletePassword, setUID, setRememberMe } from "../../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { needsToAuthorizeNetatmo } from "../../utils/NetatmoAuth";
@@ -11,6 +11,7 @@ export default function Login() {
 
     const email = useSelector(state => state.rootReducer.user.email);
     const password = useSelector(state => state.rootReducer.user.password);
+    const rememberMe = useSelector(state => state.rootReducer.user.rememberMe);
     const uid = useSelector(state => state.rootReducer.user.uid);
 
     const navigate = useNavigate();
@@ -57,6 +58,9 @@ export default function Login() {
                 //if has signed in sucessfully
                 console.log(` logged_in.error: ${logged_in.error}`)
                 if(!logged_in.error) {
+                    if(rememberMe) {
+                        window.localStorage.setItem("rememberMe", logged_in.message)//setter uid i rememberMe i localstorage
+                    }
                     console.log('Has logged in. Getting refresh token from firebase.')
                     const hasToken = await getRefreshTokenFromFirebase(logged_in.message)
                     
@@ -90,6 +94,8 @@ export default function Login() {
                     <p>Passord:</p>
                     <input type="password" value={password} onChange={(e) => dispatch(setPassword(e.target.value))}/>
                 </div>
+                <input type="checkbox" value={rememberMe} onChange={(e) => dispatch(setRememberMe(e.target.checked))} />
+                Husk meg<br />
                 <input type="submit" value="Logg inn" />
             </form>
             <Link to="/forgot">Glemt passord?</Link>
