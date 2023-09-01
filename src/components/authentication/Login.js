@@ -94,10 +94,10 @@ export default function Login() {
                     <p>Passord:</p>
                     <input type="password" value={password} onChange={(e) => dispatch(setPassword(e.target.value))}/>
                 </div>
-                <input type="checkbox" value={rememberMe} onChange={(e) => dispatch(setRememberMe(e.target.checked))} />
-                {//Husk meg<br />
-                //<input type="submit" value="Logg inn" />
+                {//<input type="checkbox" value={rememberMe} onChange={(e) => dispatch(setRememberMe(e.target.checked))} />
+                //Husk meg<br />
             }
+                <input type="submit" value="Logg inn" />
             </form>
             <Link to="/forgot">Glemt passord?</Link>
             <p>Har du ikke bruker? <Link to="/register">Register deg!</Link></p>
