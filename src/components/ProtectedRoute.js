@@ -13,6 +13,7 @@ export default function ProtectedRoute({ children }) {
     console.log('timeout')
     setTimeout(100)//skittent, men venter litt i håp om at localstorage mounter innen vi kaller på den
     const rememberMe = window.localStorage.getItem('rememberMe')
+    console.log(rememberMe)
     console.log("setter uid fra localstorage")
     window.sessionStorage.setItem('uid', rememberMe)
     dispatch(setUID(rememberMe))
