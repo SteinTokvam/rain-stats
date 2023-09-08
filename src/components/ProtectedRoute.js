@@ -20,6 +20,7 @@ export default function ProtectedRoute({ children }) {
   }
 
   if (!uidFromSessionStorage && !uidFromState) {
+    console.log('går til login fra protected')
     return <Navigate to="/login" replace />;
   }
 
