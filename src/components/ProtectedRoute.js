@@ -17,6 +17,7 @@ export default function ProtectedRoute({ children }) {
     console.log("setter uid fra localstorage")
     window.sessionStorage.setItem('uid', rememberMe)
     dispatch(setUID(rememberMe))
+    setTimeout(200)
   }
 
   if (!uidFromSessionStorage && !uidFromState) {
