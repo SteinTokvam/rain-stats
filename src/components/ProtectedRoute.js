@@ -11,7 +11,7 @@ export default function ProtectedRoute({ children }) {
 
   if(!uidFromSessionStorage && !uidFromState){//sjekker om man må hente fra localstorage eller ikke
     console.log('timeout')
-    setTimeout(100)//skittent, men venter litt i håp om at localstorage mounter innen vi kaller på den
+    setTimeout(200)//skittent, men venter litt i håp om at localstorage mounter innen vi kaller på den
     const rememberMe = window.localStorage.getItem('rememberMe')
     console.log(rememberMe)
     console.log("setter uid fra localstorage")
