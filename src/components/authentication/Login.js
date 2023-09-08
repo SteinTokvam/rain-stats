@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword, deletePassword, setUID } from "../../actions/User";
+import { setEmail, setPassword, deletePassword, setUID, setRememberMe } from "../../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { needsToAuthorizeNetatmo } from "../../utils/NetatmoAuth";
@@ -94,9 +94,9 @@ export default function Login() {
                     <p>Passord:</p>
                     <input type="password" value={password} onChange={(e) => dispatch(setPassword(e.target.value))}/>
                 </div>
-                {//<input type="checkbox" value={rememberMe} onChange={(e) => dispatch(setRememberMe(e.target.checked))} />
-                //Husk meg<br />
-            }
+                <input type="checkbox" value={rememberMe} onChange={(e) => dispatch(setRememberMe(e.target.checked))} />
+                Husk meg<br />
+            
                 <input type="submit" value="Logg inn" />
             </form>
             <Link to="/forgot">Glemt passord?</Link>

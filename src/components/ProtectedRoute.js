@@ -1,21 +1,27 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { setUID } from "../actions/User";
 
 export default function ProtectedRoute({ children }) {
-  const uidFromSessionStorage = window.sessionStorage.getItem('uid')
-  const uidFromState = useSelector(state => state.rootReducer.user.uid)
-  const uidFromLocalstorage = window.localStorage.getItem('rememberMe')
-  
-  if(uidFromLocalstorage) {
+
+  var uidFromSessionStorage = window.sessionStorage.getItem('uid')
+  var uidFromState = useSelector(state => state.rootReducer.user.uid)
+
+  const dispatch = useDispatch();
+
+  if(!uidFromSessionStorage && !uidFromState){//sjekker om man må hente fra localstorage eller ikke
+    console.log('timeout')
+    setTimeout(100)//skittent, men venter litt i håp om at localstorage mounter innen vi kaller på den
+    const rememberMe = window.localStorage.getItem('rememberMe')
     console.log("setter uid fra localstorage")
-    window.sessionStorage.setItem('uid', uidFromLocalstorage)
-    setUID(uidFromLocalstorage)
+    window.sessionStorage.setItem('uid', rememberMe)
+    dispatch(setUID(rememberMe))
   }
 
-    if (!uidFromSessionStorage && !uidFromState) {
-      return <Navigate to="/login" replace />;
-    }
-  
-    return children;
-  };
+  if (!uidFromSessionStorage && !uidFromState) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+    
+};
