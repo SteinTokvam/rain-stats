@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setEmail, setPassword, deletePassword, setUID, setRememberMe } from "../../actions/User";
+import { setEmail, setPassword, deletePassword, setUID } from "../../actions/User";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { needsToAuthorizeNetatmo } from "../../utils/NetatmoAuth";
