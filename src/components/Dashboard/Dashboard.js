@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './Dashboard.css';
 import Total from "./Total";
 import Tabell from "./Tabell";
@@ -27,6 +27,8 @@ export default function Dashboard() {
     const fraDato = useSelector(state => state.rootReducer.date.fraDato);
     const tilDato = useSelector(state => state.rootReducer.date.tilDato);
 
+    const [show, setShow] = useState(false);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -50,6 +52,10 @@ export default function Dashboard() {
             return
         })
     }
+
+    useEffect(() => {
+        setTimeout(() => setShow(true), 10000);
+      }, []);
 
       useEffect(() => {
         
@@ -146,7 +152,17 @@ export default function Dashboard() {
 </svg></Button>
                 <Tabell rainData={rainDataFiltered}/>
                 
-            </> : <Spinner />}
+            </> : 
+            <>
+                <Spinner />
+                {show && 
+                <>
+                    <p>Dette tok lenger tid enn vanlig...</p>
+                    <Button variant="text" onClick={() => window.location.reload()}>Prøv igjen</Button>
+                </>
+                }
+            </>
+            }
             </div>
     )
 }
