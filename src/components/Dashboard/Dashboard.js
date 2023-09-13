@@ -87,7 +87,7 @@ export default function Dashboard() {
             }
         })
 
-    }, [dispatch, uid, navigate]);
+    }, [dispatch, uid, navigate, fetchRainData]);
 
     const max = rainDataFiltered.length > 0 ? rainDataFiltered.reduce(function(prev, current) {
         return (prev.value > current.value) ? prev : current
