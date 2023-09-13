@@ -50,7 +50,7 @@ export default function Dashboard() {
             dispatch(addTilDato(convertDateString(rain[rain.length-1].key)));
             return
         })        
-    }, [])
+    }, [dispatch, uid])
     
 
     useEffect(() => {
