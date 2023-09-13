@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import './Dashboard.css';
 import Total from "./Total";
 import Tabell from "./Tabell";
@@ -40,8 +40,7 @@ export default function Dashboard() {
             return totalRain
     }
 
-    function fetchRainData() {
-            
+    const fetchRainData = useCallback(() => {
         getDataFromNetatmo(uid, '1day')
         .then(rain => {
             dispatch(addTotalRain(calculateTotalRain(rain)))
@@ -50,8 +49,9 @@ export default function Dashboard() {
             dispatch(addFraDato(convertDateString(rain[0].key)));
             dispatch(addTilDato(convertDateString(rain[rain.length-1].key)));
             return
-        })
-    }
+        })        
+    }, [])
+    
 
     useEffect(() => {
         setTimeout(() => setShow(true), 10000);
