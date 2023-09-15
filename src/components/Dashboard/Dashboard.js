@@ -69,7 +69,7 @@ export default function Dashboard() {
                             window.sessionStorage.clear()
 
                             dispatch(logOut())
-                            window.location.replace(base_url.redirect_uri)//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload i stedet for
+                            window.location.replace(`${base_url.redirect_uri}/#/login`)//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload til login
                             return
                         }
                         sessionStorage.setItem('auth_code', res)
