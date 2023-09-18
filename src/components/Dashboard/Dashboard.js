@@ -69,7 +69,6 @@ export default function Dashboard() {
 
                             dispatch(logOut())
                             navigate('/login')
-                            //window.location.replace(`${base_url.redirect_uri}/#/login`)//skitten måte å gjøre det på.. appen krasjer på login skjermen.. denne linjen tvinger en reload til login
                             return
                         }
                         sessionStorage.setItem('auth_code', res)
