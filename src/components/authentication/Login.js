@@ -96,8 +96,6 @@ export default function Login() {
                 </div>
                 <input type="checkbox" value={rememberMe} onChange={(e) => dispatch(setRememberMe(e.target.checked))} />
                 Husk meg<br />
-            
-            
                 <input type="submit" value="Logg inn" />
             </form>
             <Link to="/forgot">Glemt passord?</Link>

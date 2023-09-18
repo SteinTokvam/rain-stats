@@ -6,21 +6,18 @@ export default function ProtectedRoute({ children }) {
 
   var uidFromSessionStorage = window.sessionStorage.getItem('uid')
   var uidFromState = useSelector(state => state.rootReducer.user.uid)
+  var rememberMe = ""
 
   const dispatch = useDispatch();
 
   if(!uidFromSessionStorage && !uidFromState){//sjekker om man må hente fra localstorage eller ikke
-    console.log('timeout')
-    setTimeout(200)//skittent, men venter litt i håp om at localstorage mounter innen vi kaller på den
-    const rememberMe = window.localStorage.getItem('rememberMe')
+    rememberMe = window.localStorage.getItem('rememberMe')
     console.log(rememberMe)
-    console.log("setter uid fra localstorage")
     window.sessionStorage.setItem('uid', rememberMe)
     dispatch(setUID(rememberMe))
-    setTimeout(200)
   }
 
-  if (!uidFromSessionStorage && !uidFromState) {
+  if (!uidFromSessionStorage && !uidFromState && !rememberMe) {
     console.log('går til login fra protected')
     return <Navigate to="/login" replace />;
   }
