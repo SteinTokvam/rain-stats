@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import { convertDateString, dayMonthYear, getDate, getDateReversed } from "../../utils/DateUtil";
 import { getQueryCode } from "../../utils/NetatmoAuth";
 import { getRefreshTokenFromFirebase } from "../../utils/firebase";
-import { base_url } from "../../utils/Urls";
 import Graph from "./Graph";
 import { getDataFromNetatmo } from "../../utils/Netatmo";
 import { Button } from "@mui/material";
