@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePassword, setEmail, setPassword, setUID } from "../../actions/User";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { base_url } from "../../utils/Urls";
+import { base_url, routes } from "../../utils/Urls";
 
 export default function SignUp(){
     const email = useSelector(state => state.rootReducer.user.email);
@@ -37,7 +37,7 @@ export default function SignUp(){
                                 <br />
                                 <button onClick={() => {
                                     toast.dismiss(t.id)
-                                    navigate('/login')
+                                    navigate(routes.login)
                                     }
                                 } >
                                     Logg inn
@@ -51,7 +51,7 @@ export default function SignUp(){
                     setTmpPass('')
                     dispatch(setUID(res.uid))
                     toast.success('Gratulerer med din nye bruker!')
-                    navigate('/login');
+                    navigate(routes.login);
                     return
                 }
                 
@@ -81,7 +81,7 @@ export default function SignUp(){
                 </div>
                 <input type="submit" value="Registrer bruker" />
             </form>
-            <p>Har du allerede en bruker? <Link to="/login">Logg inn.</Link></p>
+            <p>Har du allerede en bruker? <Link to={routes.login}>Logg inn.</Link></p>
         </div>
     )
 }

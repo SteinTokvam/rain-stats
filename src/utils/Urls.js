@@ -3,3 +3,12 @@ export const base_url = {
     netatmo: 'https://api.netatmo.com',
     backend: 'https://rain-stats-serverless.vercel.app'
 }
+
+export const routes = {
+    login: '/login',
+    register: '/register',
+    forgotPassword: '/forgot',
+    connect: '/connect',
+    codeRecieved: '/coderecieved',
+    dashboard: '/',
+}

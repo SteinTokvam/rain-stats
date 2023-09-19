@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { needsToAuthorizeNetatmo } from "../../utils/NetatmoAuth";
 import { getRefreshTokenFromFirebase, handleSignIn } from "../../utils/firebase";
+import { routes } from "../../utils/Urls";
 
 export default function Login() {
 
@@ -28,7 +29,7 @@ export default function Login() {
             dispatch(setUID(uid))
             window.sessionStorage.setItem('uid', uid)
             
-            navigate('/connect')
+            navigate(routes.connect)
         } 
     }, [uid, navigate, dispatch])
 
@@ -71,11 +72,11 @@ export default function Login() {
                     if(needsToAuthorizeNetatmo(hasToken)) {
                         console.log('Starting authentication run against netatmo.')
                         console.log(`uid før kall: ${logged_in.message}`)
-                        navigate('/connect')
+                        navigate(routes.connect)
                         
                     } else {
                         console.log('Got token from netatmo already')
-                        navigate('/')
+                        navigate(routes.dashboard)
                     }
                 } else {
                     toast.error('Kunne ikke logge inn. Prøv igjen senere.')
@@ -98,8 +99,8 @@ export default function Login() {
                 Husk meg<br />
                 <input type="submit" value="Logg inn" />
             </form>
-            <Link to="/forgot">Glemt passord?</Link>
-            <p>Har du ikke bruker? <Link to="/register">Register deg!</Link></p>
+            <Link to={routes.forgotPassword}>Glemt passord?</Link>
+            <p>Har du ikke bruker? <Link to={routes.register}>Register deg!</Link></p>
         </div>
     )
 }

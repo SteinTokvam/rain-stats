@@ -9,6 +9,7 @@ import Login from './components/authentication/Login';
 import SignUp from './components/authentication/SignUp';
 import NetatmoConnector from './components/Netatmo/NetatmoConnector';
 import NetatmoCodeReciever from './components/Netatmo/NetatmoCodeReciever';
+import { routes } from './utils/Urls';
 
 
 
@@ -18,22 +19,22 @@ function App() {
           <div id='content'>
             <Toaster position="top-right"/>
             <Routes>
-              <Route path='/login' element={ <Login /> } />
-              <Route path='/register' element={ <SignUp /> } />
-              <Route path='/forgot' element={ <ForgotPassword /> } />
+              <Route path={routes.login} element={ <Login /> } />
+              <Route path={routes.register} element={ <SignUp /> } />
+              <Route path={routes.forgotPassword} element={ <ForgotPassword /> } />
 
-              <Route path='/connect' element={
+              <Route path={routes.connect} element={
                 <ProtectedRoute>
                   <NetatmoConnector />
                 </ProtectedRoute>
               } />
-              <Route path='/coderecieved' element={
+              <Route path={routes.codeRecieved} element={
                 <ProtectedRoute>
                   <NetatmoCodeReciever />
                 </ProtectedRoute>
               } />
 
-              <Route path='/' element={ 
+              <Route path={routes.dashboard} element={ 
               <ProtectedRoute>
                 <Dashboard /> 
               </ProtectedRoute>

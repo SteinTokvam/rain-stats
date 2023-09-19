@@ -3,7 +3,7 @@ import { getNetatmoToken } from "../../utils/NetatmoAuth"
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { base_url } from "../../utils/Urls";
+import { base_url, routes } from "../../utils/Urls";
 
 
 export default function NetatmoCodeReciever(){
@@ -27,7 +27,7 @@ export default function NetatmoCodeReciever(){
                 }
 
                 if(!r.error) {
-                    navigate('/')
+                    navigate(routes.dashboard)
                     return
                 } else {
                     toast.error(r.error)

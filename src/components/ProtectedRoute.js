@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { setUID } from "../actions/User";
+import { routes } from "../utils/Urls";
 
 export default function ProtectedRoute({ children }) {
 
@@ -19,7 +20,7 @@ export default function ProtectedRoute({ children }) {
 
   if (!uidFromSessionStorage && !uidFromState && !rememberMe) {
     console.log('går til login fra protected')
-    return <Navigate to="/login" replace />;
+    return <Navigate to={routes.login} replace />;
   }
 
   return children;

@@ -16,6 +16,7 @@ import { getRefreshTokenFromFirebase } from "../../utils/firebase";
 import Graph from "./Graph";
 import { getDataFromNetatmo } from "../../utils/Netatmo";
 import { Button } from "@mui/material";
+import { routes } from "../../utils/Urls";
 
 export default function Dashboard() {
     const rainData = useSelector((state) => state.rootReducer.rain.rainData);
@@ -68,12 +69,12 @@ export default function Dashboard() {
                             window.sessionStorage.clear()
 
                             dispatch(logOut())
-                            navigate('/login')
+                            navigate(routes.login)
                             return
                         }
                         sessionStorage.setItem('auth_code', res)
-                        console.log('går til /coderecieved')
-                        navigate('/coderecieved')
+                        console.log(`går til ${routes.codeRecieved}`)
+                        navigate(routes.codeRecieved)
                     }
                 })
             } else {
@@ -129,7 +130,7 @@ export default function Dashboard() {
         dispatch(logOut())
         window.sessionStorage.clear()
         window.localStorage.clear()
-        navigate('/login', true)
+        navigate(routes.login, true)
     }
 
     return(
