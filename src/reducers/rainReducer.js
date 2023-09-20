@@ -32,6 +32,7 @@ const rainReducer = (state = initialState, action) => {
                 ...state,
                 hourlyRainData: action.payload
             }
+        case 'RESET_RAIN_DATA':
         case 'LOG_OUT':
             return initialState
         default:

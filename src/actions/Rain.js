@@ -27,6 +27,12 @@ export const removeHourlyData = () => {
     }
 }
 
+export const resetRainData = () => {
+    return {
+        type: 'RESET_RAIN_DATA',
+    };
+}
+
 export const addTotalRain = (totalRain) => {
     return {
         type: 'ADD_TOTAL_RAIN',
