@@ -8,8 +8,8 @@ export function getDataFromNetatmo(uid, scale, date_begin, date_end) {
             body: JSON.stringify({
                 refresh_token: !uid ? window.sessionStorage.getItem('uid') : uid,
                 scale: scale,
-                date_begin: 0,
-                date_end: date_end
+                date_begin,
+                date_end
             })
     }
     )
